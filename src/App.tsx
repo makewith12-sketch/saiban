@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  Building2, 
   Home, 
   Briefcase, 
   CreditCard, 
@@ -26,7 +25,6 @@ import {
   TrendingUp, 
   Check, 
   Award, 
-  Image as ImageIcon
 } from 'lucide-react';
 
 // ========================================== //
