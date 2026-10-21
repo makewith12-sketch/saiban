@@ -1760,89 +1760,83 @@ function BankingPartnersSection({ onOpenModal }: ComponentProps) {
 // SECTION: FOOTER                            //
 // ========================================== //
 
-function Footer({ onOpenModal }: ComponentProps) {
-  return (
-    <footer className="bg-slate-900 text-slate-400 text-xs pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+// function Footer({ onOpenModal }: ComponentProps) {
+//   return (
+//     <footer className="bg-slate-900 text-slate-400 text-xs pt-16 pb-12">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-14 border-b border-slate-800">
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-14 border-b border-slate-800">
           
-          {/* Company branding */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2">
-              {/* [CHANGE ICON HERE] Updated image source to match logo file and removed invert/brightness filters to display natural JPEG colors */}
-              <img 
-                src="/logo12.jpeg" 
-                alt="Saiban Capital Solutions Logo" 
-                className="w-11 h-11 object-contain rounded-xl shadow-sm border border-slate-800"
-              />
-              <span className="text-lg font-black uppercase">
-                <span className="text-[#4B9303]">SAIBAN</span>
-                <span className="text-[#024CA3]">CAPITAL</span>
-              </span>
-            </div>
+//           <div className="lg:col-span-2 space-y-4">
+//             <div className="flex items-center gap-2">
+//               <img 
+//                 src="/logo12.jpeg" 
+//                 alt="Saiban Capital Solutions Logo" 
+//                 className="w-11 h-11 object-contain rounded-xl shadow-sm border border-slate-800"
+//               />
+//               <span className="text-lg font-black uppercase">
+//                 <span className="text-[#4B9303]">SAIBAN</span>
+//                 <span className="text-[#024CA3]">CAPITAL</span>
+//               </span>
+//             </div>
             
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Saiban Capital Solutions is India's leading digital financial advisory and lending marketplace, empowering borrowers through unbiased algorithmic comparisons, lowest interest rates, and paperless digital sanctioning.
-            </p>
+//             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+//               Saiban Capital Solutions is India's leading digital financial advisory and lending marketplace, empowering borrowers through unbiased algorithmic comparisons, lowest interest rates, and paperless digital sanctioning.
+//             </p>
 
-            <div className="text-[11px] text-slate-400 space-y-1 pt-2">
-              <p>Corporate HQ: Horizon Towers, Bandra Kurla Complex (BKC), Mumbai 400051</p>
-              <p>Customer Support: support@saibancapital.in | Toll-Free: 1800-419-8900</p>
-            </div>
-          </div>
+//             <div className="text-[11px] text-slate-400 space-y-1 pt-2">
+//               <p>Corporate HQ: Horizon Towers, Bandra Kurla Complex (BKC), Mumbai 400051</p>
+//               <p>Customer Support: support@saibancapital.in | Toll-Free: 1800-419-8900</p>
+//             </div>
+//           </div>
 
-          {/* Loan Products */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Loan Portfolio</h4>
-            <ul className="space-y-2">
-              <li><button onClick={() => onOpenModal('Home Loan')} className="hover:text-emerald-400 transition-colors">Home Loans</button></li>
-              <li><button onClick={() => onOpenModal('Personal Loan')} className="hover:text-emerald-400 transition-colors">Personal Loans</button></li>
-              <li><button onClick={() => onOpenModal('Loan Against Property')} className="hover:text-emerald-400 transition-colors">Loan Against Property</button></li>
-              <li><button onClick={() => onOpenModal('Business Loan')} className="hover:text-emerald-400 transition-colors">Business & MSME Loans</button></li>
-              <li><button onClick={() => onOpenModal('Home Loan Balance Transfer')} className="hover:text-emerald-400 transition-colors">Balance Transfer</button></li>
-              <li><button onClick={() => onOpenModal('Commercial Purchase')} className="hover:text-emerald-400 transition-colors">Commercial Property Loan</button></li>
-            </ul>
-          </div>
+//           <div className="space-y-3">
+//             <h4 className="text-xs font-bold uppercase tracking-wider text-white">Loan Portfolio</h4>
+//             <ul className="space-y-2">
+//               <li><button onClick={() => onOpenModal('Home Loan')} className="hover:text-emerald-400 transition-colors">Home Loans</button></li>
+//               <li><button onClick={() => onOpenModal('Personal Loan')} className="hover:text-emerald-400 transition-colors">Personal Loans</button></li>
+//               <li><button onClick={() => onOpenModal('Loan Against Property')} className="hover:text-emerald-400 transition-colors">Loan Against Property</button></li>
+//               <li><button onClick={() => onOpenModal('Business Loan')} className="hover:text-emerald-400 transition-colors">Business & MSME Loans</button></li>
+//               <li><button onClick={() => onOpenModal('Home Loan Balance Transfer')} className="hover:text-emerald-400 transition-colors">Balance Transfer</button></li>
+//               <li><button onClick={() => onOpenModal('Commercial Purchase')} className="hover:text-emerald-400 transition-colors">Commercial Property Loan</button></li>
+//             </ul>
+//           </div>
 
-          {/* Calculators links */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Calculators</h4>
-            <ul className="space-y-2">
-              <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Home Loan EMI Calculator</a></li>
-              <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Personal Loan EMI Calculator</a></li>
-              <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Balance Transfer Savings</a></li>
-              <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">CIBIL Score Eligibility</a></li>
-              <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Part-Prepayment Estimator</a></li>
-            </ul>
-          </div>
+//           <div className="space-y-3">
+//             <h4 className="text-xs font-bold uppercase tracking-wider text-white">Calculators</h4>
+//             <ul className="space-y-2">
+//               <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Home Loan EMI Calculator</a></li>
+//               <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Personal Loan EMI Calculator</a></li>
+//               <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Balance Transfer Savings</a></li>
+//               <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">CIBIL Score Eligibility</a></li>
+//               <li><a href="#calculator-section" className="hover:text-emerald-400 transition-colors">Part-Prepayment Estimator</a></li>
+//             </ul>
+//           </div>
 
-          {/* Legal and Compliance */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Legal & Compliance</h4>
-            <ul className="space-y-2">
-              <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Terms & Conditions</a></li>
-              <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Fair Practice Code</a></li>
-              <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Grievance Redressal Officer</a></li>
-              <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Data Security & Encryption</a></li>
-            </ul>
-          </div>
+//           <div className="space-y-3">
+//             <h4 className="text-xs font-bold uppercase tracking-wider text-white">Legal & Compliance</h4>
+//             <ul className="space-y-2">
+//               <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
+//               <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Terms & Conditions</a></li>
+//               <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Fair Practice Code</a></li>
+//               <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Grievance Redressal Officer</a></li>
+//               <li><a href="#hero-section" className="hover:text-emerald-400 transition-colors">Data Security & Encryption</a></li>
+//             </ul>
+//           </div>
 
-        </div>
+//         </div>
 
-        {/* Bottom Disclaimers */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-          <p>© {new Date().getFullYear()} Saiban Capital Solutions Private Limited. All rights reserved.</p>
-          <p className="text-slate-500 text-center sm:text-right max-w-xl">
-            Disclaimer: Interest rates and sanction criteria are governed exclusively by respective banking partners based on applicant credit profile and RBI guidelines.
-          </p>
-        </div>
+//         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+//           <p>© {new Date().getFullYear()} Saiban Capital Solutions Private Limited. All rights reserved.</p>
+//           <p className="text-slate-500 text-center sm:text-right max-w-xl">
+//             Disclaimer: Interest rates and sanction criteria are governed exclusively by respective banking partners based on applicant credit profile and RBI guidelines.
+//           </p>
+//         </div>
 
-      </div>
-    </footer>
-  );
-}
+//       </div>
+//     </footer>
+//   );
+// }
 
 // ========================================== //
 // SECTION: MAIN APP WRAPPER                  //
@@ -1897,7 +1891,7 @@ export default function App() {
       <BankingPartnersSection onOpenModal={handleOpenModal} />
 
       {/* 11. ENTERPRISE FOOTER */}
-      <Footer onOpenModal={handleOpenModal} />
+      {/* <Footer onOpenModal={handleOpenModal} /> */}
     </div>
   );
 }
