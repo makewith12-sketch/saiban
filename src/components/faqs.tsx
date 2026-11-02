@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus, X, Phone, ArrowRight } from 'lucide-react';
 
 export default function FAQs() {

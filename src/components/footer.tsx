@@ -90,7 +90,7 @@ export default function Footer() {
                   href="#" 
                   className="w-9 h-9 rounded border border-[#2a3747] flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-500 transition-all"
                 >
-                  <Icon size={16} strokeWidth={1.5} />
+                  <Icon width={16} height={16} strokeWidth={1.5} />
                 </a>
               ))}
             </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Home, User, Briefcase, ArrowRight } from 'lucide-react';
 
 export default function SubHero() {

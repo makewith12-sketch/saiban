@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 export default function EMICalculator() {
@@ -39,8 +39,8 @@ export default function EMICalculator() {
   }, [loanAmount, interestRate, tenure]);
 
   // Formatters
-  const formatCurrency = (val) => `₹${new Intl.NumberFormat('en-IN').format(val)}`;
-  const getSliderPercent = (val, min, max) => ((val - min) / (max - min)) * 100;
+  const formatCurrency = (val: number) => `₹${new Intl.NumberFormat('en-IN').format(val)}`;
+  const getSliderPercent = (val: number, min: number, max: number) => ((val - min) / (max - min)) * 100;
 
   // Chart Properties
   const radius = 40;

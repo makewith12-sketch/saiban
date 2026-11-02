@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   Phone, 
   Mail, 
@@ -194,7 +193,7 @@ export default function ContactForm() {
                   Anything we should know? <span className="font-normal text-slate-400">(optional)</span>
                 </label>
                 <textarea 
-                  rows="3" 
+                  rows={3} 
                   placeholder="Monthly income, existing loans, preferred lender..." 
                   className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-[#0052cc] focus:border-[#0052cc] outline-none transition-all text-sm resize-none placeholder:text-slate-400"
                 ></textarea>
