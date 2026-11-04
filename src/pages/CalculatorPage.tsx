@@ -1,5 +1,4 @@
-// src/pages/CalculatorPage.tsx
-import React, { useState, useId, useMemo } from 'react';
+import { useState, useId, useMemo } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import {
@@ -8,7 +7,6 @@ import {
   ShieldCheck,
   ChevronDown,
   ChevronUp,
-  PieChart as PieIcon,
   Table as TableIcon,
   RefreshCw,
   Info
