@@ -1,3 +1,4 @@
+// src/components/header.tsx
 import { useState } from 'react';
 import { Phone, Menu, X } from 'lucide-react';
 
@@ -5,13 +6,18 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    "Home Loans",
-    "Personal Loans",
-    "Business Loans",
-    "EMI Calculator",
-    "About",
-    "Insights"
+    { label: "Home Loans", href: "/" },
+    { label: "Personal Loans", href: "/" },
+    { label: "Business Loans", href: "/apply" },
+    { label: "EMI Calculator", href: "/calculator" },
+    { label: "About", href: "/#about" },
+    { label: "Insights", href: "/#insights" }
   ];
+
+  const handleApplyClick = () => {
+    setIsMobileMenuOpen(false);
+    window.location.href = '/apply';
+  };
 
   return (
     <>
@@ -32,11 +38,13 @@ export default function Header() {
             
             {/* 1. Logo Section */}
             <div className="flex-shrink-0 flex items-center">
-              <img 
-                src="/logo12.jpeg" 
-                alt="Saiban Capital Solutions" 
-                className="h-10 lg:h-12 w-auto object-contain"
-              />
+              <a href="/">
+                <img 
+                  src="/logo12.jpeg" 
+                  alt="Saiban Capital Solutions" 
+                  className="h-10 lg:h-12 w-auto object-contain"
+                />
+              </a>
             </div>
 
             {/* 2. Desktop Navigation Links */}
@@ -44,10 +52,10 @@ export default function Header() {
               {navLinks.map((link, index) => (
                 <a 
                   key={index} 
-                  href="#" 
+                  href={link.href} 
                   className="text-[14.5px] font-semibold text-[#0a192f] hover:text-[#0052cc] transition-colors whitespace-nowrap"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </nav>
@@ -58,7 +66,10 @@ export default function Header() {
                 <Phone size={16} strokeWidth={2.5} className="text-[#0a192f]" />
                 <span>+91 91011 25757</span>
               </div>
-              <button className="bg-[#0052cc] hover:bg-[#003d8f] text-white font-bold text-[14.5px] px-6 py-2.5 rounded-lg transition-colors shadow-[0_4px_14px_rgba(0,82,204,0.25)]">
+              <button 
+                onClick={handleApplyClick}
+                className="bg-[#0052cc] hover:bg-[#003d8f] text-white font-bold text-[14.5px] px-6 py-2.5 rounded-lg transition-colors shadow-[0_4px_14px_rgba(0,82,204,0.25)] cursor-pointer"
+              >
                 Apply now
               </button>
             </div>
@@ -82,10 +93,11 @@ export default function Header() {
             {navLinks.map((link, index) => (
               <a 
                 key={index} 
-                href="#" 
+                href={link.href} 
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="text-[15px] font-semibold text-[#0a192f] hover:text-[#0052cc] py-2 border-b border-slate-50 last:border-0"
               >
-                {link}
+                {link.label}
               </a>
             ))}
             <div className="flex flex-col gap-4 mt-4 pt-4 border-t border-slate-100">
@@ -93,7 +105,10 @@ export default function Header() {
                 <Phone size={18} strokeWidth={2.5} />
                 <span>+91 91011 25757</span>
               </div>
-              <button className="w-full bg-[#0052cc] text-white font-bold text-[15px] px-6 py-3 rounded-lg shadow-md">
+              <button 
+                onClick={handleApplyClick}
+                className="w-full bg-[#0052cc] text-white font-bold text-[15px] px-6 py-3 rounded-lg shadow-md"
+              >
                 Apply now
               </button>
             </div>

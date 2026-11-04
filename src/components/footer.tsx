@@ -1,8 +1,6 @@
+// src/components/footer.tsx
 import React from 'react';
-// 1. Keep lucide-react only for generic utility icons (like Mail, Phone, etc.) if needed.
-// Otherwise, delete the lucide-react import line entirely.
 
-// 2. Add these lightweight, copy-pasteable Brand SVG components:
 const Facebook = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" {...props}>
     <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.8c4.56-.93 8-4.96 8-9.8z" />
@@ -65,12 +63,13 @@ export default function Footer() {
           {/* Brand & Description */}
           <div className="lg:col-span-4 lg:pr-12">
             <div className="flex items-center gap-4 mb-6">
-              {/* Recreated Logo Mark */}
-              <img 
-                src="/logo12.jpeg" 
-                alt="Saiban Capital Solutions Logo" 
-                className="w-11 h-11 object-contain rounded-xl shadow-sm border border-slate-800"
-              />
+              <a href="/">
+                <img 
+                  src="/logo12.jpeg" 
+                  alt="Saiban Capital Solutions Logo" 
+                  className="w-11 h-11 object-contain rounded-xl shadow-sm border border-slate-800"
+                />
+              </a>
               <div>
                 <h3 className="text-[1.35rem] font-bold text-white tracking-wide leading-none mb-1.5">
                   SAIBAN
@@ -104,7 +103,7 @@ export default function Footer() {
             <ul className="space-y-3.5 text-[0.9rem] text-[#c0cbd8]">
               <li><a href="#" className="hover:text-white transition">Home Loan</a></li>
               <li><a href="#" className="hover:text-white transition">Personal Loan</a></li>
-              <li><a href="#" className="hover:text-white transition">Business Loan</a></li>
+              <li><a href="/apply" className="hover:text-white transition">Business Loan</a></li>
               <li><a href="#" className="hover:text-white transition">Loan Against Property</a></li>
               <li><a href="#" className="hover:text-white transition">Balance Transfer</a></li>
             </ul>
@@ -119,17 +118,23 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition">About us</a></li>
               <li><a href="#" className="hover:text-white transition">Our partners</a></li>
               <li><a href="#" className="hover:text-white transition">Careers</a></li>
-              <li><a href="#" className="hover:text-white transition">Contact</a></li>
+              <li><a href="/contact" className="hover:text-white transition font-semibold text-white">
+        Contact
+      </a></li>
             </ul>
           </div>
 
-          {/* Resources Column */}
+          {/* Resources Column with EMI Calculator link */}
           <div className="lg:col-span-2">
             <h4 className="text-[0.65rem] font-semibold text-slate-500 tracking-[0.15em] uppercase mb-6">
               RESOURCES
             </h4>
             <ul className="space-y-3.5 text-[0.9rem] text-[#c0cbd8]">
-              <li><a href="#" className="hover:text-white transition">EMI calculator</a></li>
+              <li>
+                <a href="/calculator" className="hover:text-white transition font-semibold text-white">
+                  EMI calculator
+                </a>
+              </li>
               <li><a href="#" className="hover:text-white transition">Eligibility check</a></li>
               <li><a href="#" className="hover:text-white transition">Knowledge centre</a></li>
               <li><a href="#" className="hover:text-white transition">FAQs</a></li>
