@@ -147,10 +147,10 @@ export default function Footer() {
               HEAD OFFICE
             </h4>
             <ul className="space-y-3.5 text-[0.9rem] text-[#c0cbd8]">
-              <li>[Office address line 1]</li>
-              <li>Bangalore, Karnataka – 560001</li>
-              <li className="pt-2">+91 91011 25757</li>
-              <li>[hello@saibancapital.in]</li>
+              <li>[Office address]</li>
+              <li>Office No - 101, Elite Residency, near Shrirang Society, Shrirang Society, Thane West, Thane, Maharashtra 400601</li>
+              <li className="pt-2">+91 8127727747 </li>
+              <li>[info@saibancapital.com]</li>
             </ul>
           </div>
 
