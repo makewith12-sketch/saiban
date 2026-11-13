@@ -103,7 +103,7 @@ export default function Header() {
             <div className="flex flex-col gap-4 mt-4 pt-4 border-t border-slate-100">
               <div className="flex items-center gap-2 text-[#0a192f] font-semibold text-[15px]">
                 <Phone size={18} strokeWidth={2.5} />
-                <span>+91 91011 25757</span>
+                <span>+91 8127727747 </span>
               </div>
               <button 
                 onClick={handleApplyClick}
