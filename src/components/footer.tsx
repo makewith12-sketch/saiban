@@ -150,7 +150,7 @@ export default function Footer() {
               <li>Office address</li>
               <li>Office No - 101, Elite Residency, near Shrirang Society, Shrirang Society, Thane West, Thane, Maharashtra 400601</li>
               <li className="pt-2">+91 8127727747 </li>
-              <li>[info@saibancapital.com]</li>
+              <li>info@saibancapital.com</li>
             </ul>
           </div>
 
