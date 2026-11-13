@@ -64,7 +64,7 @@ export default function Header() {
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               <div className="flex items-center gap-2 text-[#0a192f] font-semibold text-[14.5px]">
                 <Phone size={16} strokeWidth={2.5} className="text-[#0a192f]" />
-                <span>+91 91011 25757</span>
+                <span>+91 8127727747</span>
               </div>
               <button 
                 onClick={handleApplyClick}
