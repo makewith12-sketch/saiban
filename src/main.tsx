@@ -19,6 +19,9 @@ import Footer from './components/footer.tsx'
 import ApplyPage from './pages/ApplyPage.tsx'
 import CalculatorPage from './pages/CalculatorPage.tsx'
 import ContactPage from './pages/ContactPage.tsx'
+import AdminLogin from './pages/AdminLogin.tsx'
+import AdminDashboard from './pages/AdminDashboard.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
 
 const pathname = window.location.pathname;
 
@@ -30,6 +33,12 @@ createRoot(document.getElementById('root')!).render(
       <CalculatorPage />
     ) : pathname === '/contact' ? (
       <ContactPage />
+    ) : pathname === '/admin/login' ? (
+      <AdminLogin />
+    ) : pathname === '/admin' ? (
+      <ProtectedRoute>
+        <AdminDashboard />
+      </ProtectedRoute>
     ) : (
       <>
         <Header />
