@@ -12,8 +12,7 @@ import {
   FileDown,
   ArrowRight,
   Loader2,
-  Lock,
-  Sparkles
+  Lock
 } from 'lucide-react';
 
 export default function ApplyPage() {
@@ -121,7 +120,6 @@ export default function ApplyPage() {
           
           <div className="mb-12 max-w-2xl">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-semibold text-[#0052cc] border border-blue-100">
-              <Sparkles className="h-3.5 w-3.5 text-[#0052cc]" />
               Institutional Underwriting
             </span>
             <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0a192f]">
@@ -429,7 +427,7 @@ export default function ApplyPage() {
                           ref={recaptchaRef}
                           sitekey={
                             import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
-                            "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                            "6LdbQiMuAAAAADQnttOcCBlX1dzrlMB2ElsF3yGN"
                           }
                           onChange={handleCaptchaChange}
                           onExpired={handleCaptchaExpired}

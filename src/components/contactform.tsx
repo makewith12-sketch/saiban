@@ -47,7 +47,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-400 font-medium mb-1">Call us</p>
-                  <p className="font-bold text-[#0a192f] text-sm">+91 91011 25757</p>
+                  <p className="font-bold text-[#0a192f] text-sm">+91 8127727747</p>
                 </div>
               </div>
 
@@ -58,7 +58,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-400 font-medium mb-1">Email</p>
-                  <p className="font-bold text-[#0a192f] text-sm">[hello@saibancapital.in]</p>
+                  <p className="font-bold text-[#0a192f] text-sm">info@saibancapital.com</p>
                 </div>
               </div>
 
@@ -70,8 +70,7 @@ export default function ContactForm() {
                 <div>
                   <p className="text-xs text-slate-400 font-medium mb-1">Visit our office</p>
                   <p className="font-bold text-[#0a192f] text-sm leading-relaxed">
-                    [Office address line 1]<br />
-                    Bangalore, Karnataka – 560001
+                    Office No - 101, Elite Residency, near Shrirang Society, Shrirang Society, Thane West, Thane, Maharashtra 400601
                   </p>
                 </div>
               </div>
