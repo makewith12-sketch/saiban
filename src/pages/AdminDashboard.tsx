@@ -1,7 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
+import {
+  DocumentTextIcon,
+  ChatBubbleLeftRightIcon,
+  BookOpenIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ArrowRightOnRectangleIcon,
+  ArrowPathIcon,
+  MagnifyingGlassIcon,
+  EyeIcon,
+  TrashIcon,
+} from '@heroicons/react/24/outline';
 import { supabase } from '../lib/supabase';
+import { fetchAllArticlesAdmin } from '../lib/articlesStore';
+import AdminArticlesManager from '../components/AdminArticlesManager';
 
-type Section = 'loan_applications' | 'contact_queries';
+type Section = 'loan_applications' | 'contact_queries' | 'articles';
 type DbRow = Record<string, unknown>;
 
 export default function AdminDashboard() {
@@ -10,6 +24,8 @@ export default function AdminDashboard() {
 
   const [applications, setApplications] = useState<DbRow[]>([]);
   const [queries, setQueries] = useState<DbRow[]>([]);
+  const [articlesCount, setArticlesCount] = useState<number>(0);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,7 +35,7 @@ export default function AdminDashboard() {
     setLoading(true);
     setError(null);
 
-    const [appsRes, queriesRes] = await Promise.all([
+    const [appsRes, queriesRes, articlesRes] = await Promise.allSettled([
       supabase
         .from('loan_applications')
         .select('*')
@@ -28,27 +44,37 @@ export default function AdminDashboard() {
         .from('contact_queries')
         .select('*')
         .order('created_at', { ascending: false }),
+      fetchAllArticlesAdmin(),
     ]);
 
-    // Fallback if table doesn't have a created_at column
-    if (appsRes.error?.code === '42703') {
-      const retryApps = await supabase.from('loan_applications').select('*');
-      if (retryApps.error) setError(retryApps.error.message);
-      else setApplications(retryApps.data ?? []);
-    } else if (appsRes.error) {
-      setError(appsRes.error.message);
-    } else {
-      setApplications(appsRes.data ?? []);
+    if (appsRes.status === 'fulfilled') {
+      const res = appsRes.value;
+      if (res.error?.code === '42703') {
+        const retryApps = await supabase.from('loan_applications').select('*');
+        if (retryApps.error) setError(retryApps.error.message);
+        else setApplications(retryApps.data ?? []);
+      } else if (res.error) {
+        setError(res.error.message);
+      } else {
+        setApplications(res.data ?? []);
+      }
     }
 
-    if (queriesRes.error?.code === '42703') {
-      const retryQueries = await supabase.from('contact_queries').select('*');
-      if (retryQueries.error) setError(retryQueries.error.message);
-      else setQueries(retryQueries.data ?? []);
-    } else if (queriesRes.error) {
-      setError(queriesRes.error.message);
-    } else {
-      setQueries(queriesRes.data ?? []);
+    if (queriesRes.status === 'fulfilled') {
+      const res = queriesRes.value;
+      if (res.error?.code === '42703') {
+        const retryQueries = await supabase.from('contact_queries').select('*');
+        if (retryQueries.error) setError(retryQueries.error.message);
+        else setQueries(retryQueries.data ?? []);
+      } else if (res.error) {
+        setError(res.error.message);
+      } else {
+        setQueries(res.data ?? []);
+      }
+    }
+
+    if (articlesRes.status === 'fulfilled') {
+      setArticlesCount(articlesRes.value.length);
     }
 
     setLoading(false);
@@ -64,7 +90,7 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = async (row: DbRow) => {
-    if (!row.id) return;
+    if (!row.id || activeSection === 'articles') return;
     const confirmed = window.confirm('Delete this record permanently?');
     if (!confirmed) return;
 
@@ -103,7 +129,6 @@ export default function AdminDashboard() {
   const columns = useMemo(() => {
     if (currentRows.length === 0) return [];
     const keys = Object.keys(currentRows[0]);
-    // Put id last or omit from primary table view if plenty of other fields exist
     return keys.filter((k) => k !== 'id');
   }, [currentRows]);
 
@@ -134,91 +159,137 @@ export default function AdminDashboard() {
     return String(value);
   };
 
-  const navItems: { id: Section; label: string; count: number }[] = [
+  const navItems: {
+    id: Section;
+    label: string;
+    count: number;
+    icon: typeof DocumentTextIcon;
+  }[] = [
     {
       id: 'loan_applications',
       label: 'Loan Applications',
       count: applications.length,
+      icon: DocumentTextIcon,
     },
     {
       id: 'contact_queries',
       label: 'Contact Queries',
       count: queries.length,
+      icon: ChatBubbleLeftRightIcon,
+    },
+    {
+      id: 'articles',
+      label: 'Articles & Guides',
+      count: articlesCount,
+      icon: BookOpenIcon,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#f8f9fc] flex flex-col lg:flex-row font-sans">
       {/* Mobile Top Header */}
-      <div className="lg:hidden flex items-center justify-between bg-white border-b px-4 py-3 sticky top-0 z-30">
+      <header className="lg:hidden flex items-center justify-between bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
-            className="p-2 rounded-lg border text-gray-700 hover:bg-gray-100"
+            className="p-2 rounded-xl border border-slate-200 text-[#0a192f] hover:bg-slate-50"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <Bars3Icon className="w-5 h-5" />
           </button>
-          <span className="font-bold text-gray-900">Saiban Admin</span>
+          <div>
+            <span className="font-extrabold text-sm text-[#0a192f] block leading-tight">
+              Saiban Admin
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#0052cc]">
+              {navItems.find((n) => n.id === activeSection)?.label}
+            </span>
+          </div>
         </div>
         <button
+          type="button"
           onClick={handleLogout}
-          className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200"
         >
+          <ArrowRightOnRectangleIcon className="w-4 h-4" />
           Sign Out
         </button>
-      </div>
+      </header>
 
       {/* Mobile Backdrop */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden"
         />
       )}
 
       {/* Side Navbar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r flex flex-col justify-between transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-68 bg-white border-r border-slate-200 flex flex-col justify-between transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div>
-          <div className="h-16 px-6 flex items-center justify-between border-b">
-            <span className="text-lg font-bold tracking-tight text-gray-900">Saiban Admin</span>
+          <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100">
+            <div className="flex items-center gap-2.5">
+              <div className="flex">
+                <span className="w-2.5 h-2.5 bg-[#8ec843]" />
+                <span className="w-2.5 h-2.5 bg-[#0052cc]" />
+              </div>
+              <span className="text-base font-extrabold tracking-tight text-[#0a192f]">
+                Saiban Admin
+              </span>
+            </div>
             <button
+              type="button"
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-1.5 text-gray-500 hover:text-gray-800"
+              aria-label="Close menu"
+              className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800"
             >
-              ✕
+              <XMarkIcon className="w-5 h-5" />
             </button>
           </div>
 
-          <nav className="p-4 space-y-1.5">
+          <div className="px-4 pt-5 pb-2">
+            <p className="px-3 text-[10px] font-extrabold uppercase tracking-[.16em] text-slate-400">
+              Management
+            </p>
+          </div>
+
+          <nav className="px-4 space-y-1.5">
             {navItems.map((item) => {
               const isActive = activeSection === item.id;
+              const Icon = item.icon;
               return (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => {
                     setActiveSection(item.id);
                     setSearchTerm('');
                     setSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-[#0a192f] text-white shadow-sm'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-[#0a192f]'
                   }`}
                 >
-                  <span>{item.label}</span>
+                  <span className="flex items-center gap-2.5">
+                    <Icon
+                      className={`w-4 h-4 ${
+                        isActive ? 'text-[#a9d56c]' : 'text-slate-400'
+                      }`}
+                    />
+                    {item.label}
+                  </span>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
+                    className={`text-[11px] px-2 py-0.5 rounded-full font-extrabold ${
                       isActive
-                        ? 'bg-white/20 text-white'
-                        : 'bg-gray-100 text-gray-600'
+                        ? 'bg-white/15 text-white'
+                        : 'bg-slate-100 text-slate-600'
                     }`}
                   >
                     {item.count}
@@ -229,11 +300,19 @@ export default function AdminDashboard() {
           </nav>
         </div>
 
-        <div className="p-4 border-t hidden lg:block">
-          <button
-            onClick={handleLogout}
-            className="w-full py-2.5 px-4 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+        <div className="p-4 border-t border-slate-100 space-y-2">
+          <a
+            href="/"
+            className="w-full flex items-center justify-center py-2 px-4 text-xs font-bold text-[#0052cc] bg-blue-50/70 rounded-xl hover:bg-blue-50 transition-colors"
           >
+            View Live Website →
+          </a>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+          >
+            <ArrowRightOnRectangleIcon className="w-4 h-4" />
             Sign Out
           </button>
         </div>
@@ -242,146 +321,170 @@ export default function AdminDashboard() {
       {/* Main Content Area */}
       <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Section Header & Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {activeSection === 'loan_applications'
-                  ? 'Loan Applications'
-                  : 'Contact Queries'}
-              </h1>
-              <p className="text-sm text-gray-500 mt-0.5">
-                Showing {filteredRows.length} of {currentRows.length} total records
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <input
-                type="text"
-                placeholder="Search records..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-3.5 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 w-full sm:w-64"
-              />
-              <button
-                onClick={fetchAllData}
-                disabled={loading}
-                className="px-4 py-2 text-sm font-medium bg-white border rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-              >
-                {loading ? 'Refreshing...' : 'Refresh'}
-              </button>
-            </div>
-          </div>
-
-          {/* Error Banner */}
-          {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-              Error loading data: {error}
-            </div>
-          )}
-
-          {/* Loading State */}
-          {loading ? (
-            <div className="bg-white rounded-xl border p-12 text-center text-sm text-gray-500">
-              Fetching records from Supabase...
-            </div>
-          ) : filteredRows.length === 0 ? (
-            <div className="bg-white rounded-xl border p-12 text-center text-sm text-gray-500">
-              No records found.
-            </div>
+          {activeSection === 'articles' ? (
+            <AdminArticlesManager />
           ) : (
             <>
-              {/* Desktop / Tablet Data Table */}
-              <div className="hidden md:block bg-white rounded-xl border shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        {columns.map((col) => (
-                          <th key={col} className="py-3.5 px-4 whitespace-nowrap">
-                            {formatHeader(col)}
-                          </th>
-                        ))}
-                        <th className="py-3.5 px-4 text-right whitespace-nowrap">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
-                      {filteredRows.map((row, idx) => (
-                        <tr
-                          key={String(row.id ?? idx)}
-                          className="hover:bg-gray-50/80 transition-colors"
-                        >
-                          {columns.map((col) => (
-                            <td
-                              key={col}
-                              className="py-3.5 px-4 max-w-xs truncate"
-                              title={formatCellValue(col, row[col])}
-                            >
-                              {formatCellValue(col, row[col])}
-                            </td>
-                          ))}
-                          <td className="py-3.5 px-4 text-right whitespace-nowrap space-x-2">
-                            <button
-                              onClick={() => setSelectedRow(row)}
-                              className="px-2.5 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-                            >
-                              View
-                            </button>
-                            {row.id !== undefined && (
-                              <button
-                                onClick={() => handleDelete(row)}
-                                className="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100"
-                              >
-                                Delete
-                              </button>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              {/* Section Header & Controls */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-[.18em] text-[#0052cc]">
+                    Submissions
+                  </span>
+                  <h1 className="mt-1 text-2xl font-extrabold text-[#0a192f]">
+                    {activeSection === 'loan_applications'
+                      ? 'Loan Applications'
+                      : 'Contact Queries'}
+                  </h1>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Showing {filteredRows.length} of {currentRows.length} total records
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="relative">
+                    <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Search records..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-9 pr-3.5 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-[#0052cc] w-full sm:w-64"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={fetchAllData}
+                    disabled={loading}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold bg-white border border-slate-200 rounded-xl text-[#0a192f] hover:bg-slate-50 disabled:opacity-50"
+                  >
+                    <ArrowPathIcon className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+                    {loading ? 'Refreshing...' : 'Refresh'}
+                  </button>
                 </div>
               </div>
 
-              {/* Mobile Card Stack */}
-              <div className="grid grid-cols-1 gap-4 md:hidden">
-                {filteredRows.map((row, idx) => (
-                  <div
-                    key={String(row.id ?? idx)}
-                    className="bg-white rounded-xl border p-4 shadow-sm space-y-3"
-                  >
-                    <div className="space-y-2">
-                      {columns.slice(0, 5).map((col) => (
-                        <div key={col} className="flex justify-between gap-4 text-sm">
-                          <span className="text-gray-500 font-medium shrink-0">
-                            {formatHeader(col)}:
-                          </span>
-                          <span className="text-gray-900 text-right truncate">
-                            {formatCellValue(col, row[col])}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+              {/* Error Banner */}
+              {error && (
+                <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs font-medium text-rose-700">
+                  Error loading data: {error}
+                </div>
+              )}
 
-                    <div className="pt-3 border-t flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => setSelectedRow(row)}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg"
-                      >
-                        Full Details
-                      </button>
-                      {row.id !== undefined && (
-                        <button
-                          onClick={() => handleDelete(row)}
-                          className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg"
-                        >
-                          Delete
-                        </button>
-                      )}
+              {/* Loading State */}
+              {loading ? (
+                <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-xs text-slate-500">
+                  Fetching records from Supabase...
+                </div>
+              ) : filteredRows.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-xs text-slate-500">
+                  No records found.
+                </div>
+              ) : (
+                <>
+                  {/* Desktop / Tablet Data Table */}
+                  <div className="hidden md:block bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-slate-50 border-b border-slate-200 text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
+                            {columns.map((col) => (
+                              <th key={col} className="py-3.5 px-4 whitespace-nowrap">
+                                {formatHeader(col)}
+                              </th>
+                            ))}
+                            <th className="py-3.5 px-4 text-right whitespace-nowrap">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+                          {filteredRows.map((row, idx) => (
+                            <tr
+                              key={String(row.id ?? idx)}
+                              className="hover:bg-slate-50/80 transition-colors"
+                            >
+                              {columns.map((col) => (
+                                <td
+                                  key={col}
+                                  className="py-3.5 px-4 max-w-xs truncate"
+                                  title={formatCellValue(col, row[col])}
+                                >
+                                  {formatCellValue(col, row[col])}
+                                </td>
+                              ))}
+                              <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div className="inline-flex items-center gap-1.5">
+                                  <button
+                                    type="button"
+                                    onClick={() => setSelectedRow(row)}
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-[#0a192f] bg-slate-100 rounded-lg hover:bg-slate-200"
+                                  >
+                                    <EyeIcon className="w-3.5 h-3.5" />
+                                    View
+                                  </button>
+                                  {row.id !== undefined && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDelete(row)}
+                                      className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100"
+                                    >
+                                      <TrashIcon className="w-3.5 h-3.5" />
+                                      Delete
+                                    </button>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  {/* Mobile Card Stack */}
+                  <div className="grid grid-cols-1 gap-4 md:hidden">
+                    {filteredRows.map((row, idx) => (
+                      <div
+                        key={String(row.id ?? idx)}
+                        className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3"
+                      >
+                        <div className="space-y-2">
+                          {columns.slice(0, 5).map((col) => (
+                            <div key={col} className="flex justify-between gap-4 text-xs">
+                              <span className="text-slate-500 font-semibold shrink-0">
+                                {formatHeader(col)}:
+                              </span>
+                              <span className="text-[#0a192f] font-medium text-right truncate">
+                                {formatCellValue(col, row[col])}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedRow(row)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-[#0a192f] bg-slate-100 rounded-lg"
+                          >
+                            <EyeIcon className="w-3.5 h-3.5" />
+                            Full Details
+                          </button>
+                          {row.id !== undefined && (
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(row)}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-rose-600 bg-rose-50 rounded-lg"
+                            >
+                              <TrashIcon className="w-3.5 h-3.5" />
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
@@ -391,39 +494,41 @@ export default function AdminDashboard() {
       {selectedRow && (
         <div
           onClick={() => setSelectedRow(null)}
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-xl"
+            className="bg-white rounded-3xl max-w-lg w-full max-h-[85vh] flex flex-col shadow-2xl"
           >
-            <div className="px-6 py-4 border-b flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Record Details</h2>
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h2 className="text-base font-extrabold text-[#0a192f]">Record Details</h2>
               <button
+                type="button"
                 onClick={() => setSelectedRow(null)}
-                className="text-gray-400 hover:text-gray-700 text-lg"
+                className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700"
               >
-                ✕
+                <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 overflow-y-auto space-y-4">
               {Object.entries(selectedRow).map(([key, value]) => (
-                <div key={key} className="border-b border-gray-100 pb-3 last:border-b-0">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                <div key={key} className="border-b border-slate-100 pb-3 last:border-b-0">
+                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
                     {formatHeader(key)}
                   </p>
-                  <p className="mt-1 text-sm text-gray-900 whitespace-pre-wrap break-words">
+                  <p className="mt-1 text-xs sm:text-sm text-[#0a192f] whitespace-pre-wrap break-words">
                     {formatCellValue(key, value)}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="px-6 py-3 bg-gray-50 border-t rounded-b-2xl flex justify-end">
+            <div className="px-6 py-3.5 bg-slate-50 border-t border-slate-100 rounded-b-3xl flex justify-end">
               <button
+                type="button"
                 onClick={() => setSelectedRow(null)}
-                className="px-4 py-2 text-sm font-medium bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+                className="px-4 py-2 text-xs font-bold bg-[#0a192f] text-white rounded-xl hover:bg-slate-800"
               >
                 Close
               </button>

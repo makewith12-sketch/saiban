@@ -27,9 +27,9 @@ import InsightsPage from './pages/InsightsPage.tsx'
 import AdminLogin from './pages/AdminLogin.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
-
+import ArticleDetailPage from './pages/ArticleDetailPage.tsx'
 const pathname = window.location.pathname;
-
+const articleMatch = pathname.match(/^\/insights\/([^/]+)\/?$/);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {pathname === '/home-loans' ? (
@@ -40,6 +40,8 @@ createRoot(document.getElementById('root')!).render(
       <BusinessLoansPage />
     ) : pathname === '/about' ? (
       <AboutPage />
+    ) : articleMatch ? (
+      <ArticleDetailPage slug={decodeURIComponent(articleMatch[1])} />
     ) : pathname === '/insights' ? (
       <InsightsPage />
     ) : pathname === '/apply' ? (
