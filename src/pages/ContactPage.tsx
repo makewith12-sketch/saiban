@@ -96,8 +96,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-[#0a192f]">Call Us</h4>
-                      <a href="tel:+919101125757" className="text-sm font-medium text-slate-600 hover:text-[#0052cc] transition">
-                        +91 91011 25757
+                      <a href="tel:+918127727747" className="text-sm font-medium text-slate-600 hover:text-[#0052cc] transition">
+                        +91 8127727747
                       </a>
                     </div>
                   </div>
@@ -108,8 +108,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-[#0a192f]">Write Email</h4>
-                      <a href="mailto:hello@saibancapital.in" className="text-sm font-medium text-slate-600 hover:text-[#0052cc] transition">
-                        hello@saibancapital.in
+                      <a href="mailto:info@saibancapital.com" className="text-sm font-medium text-slate-600 hover:text-[#0052cc] transition">
+                        info@saibancapital.com
                       </a>
                     </div>
                   </div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
                     <div>
                       <h4 className="text-sm font-bold text-[#0a192f]">Visit Office</h4>
                       <p className="text-sm text-slate-600 leading-relaxed mt-0.5">
-                        Bangalore, Karnataka – 560001
+                        Office No - 101, Elite Residency, near Shrirang Society, Shrirang Society, Thane West, Thane, Maharashtra 400601
                       </p>
                     </div>
                   </div>

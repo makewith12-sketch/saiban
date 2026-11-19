@@ -53,13 +53,19 @@ export default function Hero() {
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
-              <button className="w-full sm:w-auto bg-[#0052cc] hover:bg-[#003d8f] text-white font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 text-[14px] transition-colors shadow-lg shadow-blue-900/10">
+              <a 
+                href="/apply"
+                className="w-full sm:w-auto bg-[#0052cc] hover:bg-[#003d8f] text-white font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 text-[14px] transition-colors shadow-lg shadow-blue-900/10"
+              >
                 Check your eligibility <ArrowRight size={18} strokeWidth={2.5} />
-              </button>
+              </a>
               
-              <button className="w-full sm:w-auto bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0a192f] font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 text-[14px] transition-colors shadow-sm">
+              <a 
+                href="/calculator"
+                className="w-full sm:w-auto bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-[#0a192f] font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 text-[14px] transition-colors shadow-sm"
+              >
                 <Calculator size={18} strokeWidth={2.5} className="text-slate-500" /> Calculate EMI
-              </button>
+              </a>
             </div>
 
             {/* Trust Features Grid */}

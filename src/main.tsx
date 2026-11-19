@@ -19,6 +19,11 @@ import Footer from './components/footer.tsx'
 import ApplyPage from './pages/ApplyPage.tsx'
 import CalculatorPage from './pages/CalculatorPage.tsx'
 import ContactPage from './pages/ContactPage.tsx'
+import HomeLoansPage from './pages/HomeLoansPage.tsx'
+import PersonalLoansPage from './pages/PersonalLoansPage.tsx'
+import BusinessLoansPage from './pages/BusinessLoansPage.tsx'
+import AboutPage from './pages/AboutPage.tsx'
+import InsightsPage from './pages/InsightsPage.tsx'
 import AdminLogin from './pages/AdminLogin.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
@@ -27,7 +32,17 @@ const pathname = window.location.pathname;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {pathname === '/apply' ? (
+    {pathname === '/home-loans' ? (
+      <HomeLoansPage />
+    ) : pathname === '/personal-loans' ? (
+      <PersonalLoansPage />
+    ) : pathname === '/business-loans' ? (
+      <BusinessLoansPage />
+    ) : pathname === '/about' ? (
+      <AboutPage />
+    ) : pathname === '/insights' ? (
+      <InsightsPage />
+    ) : pathname === '/apply' ? (
       <ApplyPage />
     ) : pathname === '/calculator' ? (
       <CalculatorPage />

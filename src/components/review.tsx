@@ -9,7 +9,7 @@ export default function Reviews() {
       approvedIn: "9 days",
       name: "Rahul Mehta",
       role: "Software engineer · Bangalore",
-      avatar: "/api/placeholder/100/100"
+      avatarBg: "bg-blue-100 text-[#0052cc]"
     },
     {
       type: "Business Loan",
@@ -18,7 +18,7 @@ export default function Reviews() {
       approvedIn: "6 days",
       name: "Ananya Sharma",
       role: "Boutique owner · Bangalore",
-      avatar: "/api/placeholder/100/100"
+      avatarBg: "bg-[#f4faef] text-[#558b2f]"
     },
     {
       type: "Personal Loan",
@@ -27,7 +27,7 @@ export default function Reviews() {
       approvedIn: "48 hrs",
       name: "Dr. Kavita Rao",
       role: "Dentist · Bangalore",
-      avatar: "/api/placeholder/100/100"
+      avatarBg: "bg-slate-200 text-[#0a192f]"
     }
   ];
 
@@ -128,12 +128,10 @@ export default function Reviews() {
 
                 {/* User Profile */}
                 <div className="border-t border-slate-100 pt-5 flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                    <img 
-                      src={review.avatar} 
-                      alt={review.name}
-                      className="w-full h-full object-cover" 
-                    />
+                  <div className={`w-11 h-11 rounded-full flex items-center justify-center overflow-hidden shrink-0 ${review.avatarBg}`}>
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
+                    </svg>
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5 mb-0.5">

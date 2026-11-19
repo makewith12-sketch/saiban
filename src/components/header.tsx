@@ -6,12 +6,12 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "Home Loans", href: "/" },
-    { label: "Personal Loans", href: "/" },
-    { label: "Business Loans", href: "/apply" },
+    { label: "Home Loans", href: "/home-loans" },
+    { label: "Personal Loans", href: "/personal-loans" },
+    { label: "Business Loans", href: "/business-loans" },
     { label: "EMI Calculator", href: "/calculator" },
-    { label: "About", href: "/#about" },
-    { label: "Insights", href: "/#insights" }
+    { label: "About", href: "/about" },
+    { label: "Insights", href: "/insights" }
   ];
 
   const handleApplyClick = () => {

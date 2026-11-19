@@ -5,14 +5,9 @@ import Header from '../components/header';
 import Footer from '../components/footer';
 import { supabase } from '../lib/supabase';
 import {
-  Building2,
-  ShieldCheck,
-  Home,
   CheckCircle2,
-  FileDown,
   ArrowRight,
   Loader2,
-  Lock
 } from 'lucide-react';
 
 export default function ApplyPage() {
@@ -138,7 +133,11 @@ export default function ApplyPage() {
               <div className="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md hover:border-blue-100 transition duration-200">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition duration-200">
-                    <Building2 className="h-6 w-6" />
+                    {/* Cash Flow / Financial Growth Chart SVG */}
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                      <polyline points="16 7 22 7 22 13" />
+                    </svg>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-[#0a192f]">Positive Cash flow business</h3>
@@ -168,7 +167,11 @@ export default function ApplyPage() {
               <div className="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md hover:border-blue-100 transition duration-200">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
-                    <ShieldCheck className="h-6 w-6" />
+                    {/* Verified Borrower / Shield Check SVG */}
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      <path d="m9 12 2 2 4-4" />
+                    </svg>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-[#0a192f]">Trustworthy Borrower</h3>
@@ -198,7 +201,11 @@ export default function ApplyPage() {
               <div className="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md hover:border-blue-100 transition duration-200">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-200">
-                    <Home className="h-6 w-6" />
+                    {/* Property / Real Estate Collateral SVG */}
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                      <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-[#0a192f]">Strong Collateral (2-3x)</h3>
@@ -222,7 +229,11 @@ export default function ApplyPage() {
               </div>
 
               <div className="flex items-center gap-3 rounded-2xl bg-[#0a192f] p-4 text-white shadow-sm">
-                <Lock className="h-5 w-5 text-blue-400 shrink-0" />
+                {/* 256-bit Encryption Padlock SVG */}
+                <svg className="h-5 w-5 text-blue-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
                 <p className="text-xs text-slate-300">
                   Bank-grade 256-bit encryption. Your financial data is securely assessed solely for underwriting.
                 </p>
@@ -247,7 +258,13 @@ export default function ApplyPage() {
                     onClick={() => window.open('#', '_blank')}
                     className="inline-flex items-center gap-2 self-start sm:self-auto rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0052cc] border border-blue-200/60 px-3.5 py-2 text-xs font-semibold shadow-sm transition active:scale-95"
                   >
-                    <FileDown className="h-3.5 w-3.5" />
+                    {/* Document Download SVG */}
+                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <path d="M12 18v-6" />
+                      <path d="m9 15 3 3 3-3" />
+                    </svg>
                     <span>Business Loan Requirements</span>
                   </button>
                 </div>

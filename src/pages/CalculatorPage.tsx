@@ -171,7 +171,6 @@ export default function CalculatorPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-semibold text-[#0052cc] border border-blue-100">
-                <Sparkles className="h-3.5 w-3.5" />
                 Financial Planning Intelligence
               </span>
               <h1 className="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0a192f]">

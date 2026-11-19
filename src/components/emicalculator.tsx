@@ -291,9 +291,12 @@ export default function EMICalculator() {
 
             {/* Action Button */}
             <div className="mt-auto z-10">
-              <button className="w-full bg-white hover:bg-slate-100 text-[#0a192f] font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 text-[14px] transition-colors mb-4">
+              <a 
+                href="/apply"
+                className="w-full bg-white hover:bg-slate-100 text-[#0a192f] font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 text-[14px] transition-colors mb-4"
+              >
                 Get offers at this EMI <ArrowRight size={16} strokeWidth={2.5} />
-              </button>
+              </a>
               
               <p className="text-[10px] text-slate-400 text-center leading-relaxed">
                 Illustrative figures. Actual EMI depends on the lender's final terms.

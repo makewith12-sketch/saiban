@@ -70,21 +70,22 @@ export default function FAQs() {
               {/* Advisor Card */}
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-3 flex items-center justify-between max-w-sm">
                 <div className="flex items-center gap-4 pl-2">
-                  <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm shrink-0">
-                    <img 
-                      src="/api/placeholder/100/100" 
-                      alt="Advisor" 
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="w-12 h-12 rounded-full bg-blue-50 text-[#004aad] flex items-center justify-center border-2 border-white shadow-sm shrink-0">
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
+                    </svg>
                   </div>
                   <div>
                     <p className="text-sm font-bold text-[#0a192f]">Talk to an advisor</p>
                     <p className="text-xs text-slate-500 mt-0.5">Mon–Sat, 10am – 7pm</p>
                   </div>
                 </div>
-                <button className="w-11 h-11 bg-[#004aad] hover:bg-[#003d8f] text-white rounded-xl flex items-center justify-center transition-colors shrink-0 shadow-md shadow-blue-900/10">
+                <a 
+                  href="/contact"
+                  className="w-11 h-11 bg-[#004aad] hover:bg-[#003d8f] text-white rounded-xl flex items-center justify-center transition-colors shrink-0 shadow-md shadow-blue-900/10"
+                >
                   <Phone size={18} fill="currentColor" />
-                </button>
+                </a>
               </div>
             </div>
 
@@ -146,7 +147,7 @@ export default function FAQs() {
             {/* Darken gradient from bottom */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#091525]/80 via-transparent to-transparent z-10"></div>
             <img 
-              src="/api/placeholder/1600/900" 
+              src="/family.png" 
               alt="Happy family" 
               className="w-full h-full object-cover opacity-50 mix-blend-luminosity"
             />
@@ -180,13 +181,19 @@ export default function FAQs() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <button className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#0a192f] font-bold px-7 py-3.5 rounded-lg flex items-center justify-center gap-3 text-[14px] transition-colors shadow-lg">
+              <a 
+                href="/apply"
+                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-[#0a192f] font-bold px-7 py-3.5 rounded-lg flex items-center justify-center gap-3 text-[14px] transition-colors shadow-lg"
+              >
                 Check eligibility — it's free <ArrowRight size={18} strokeWidth={2.5} />
-              </button>
+              </a>
               
-              <button className="w-full sm:w-auto bg-transparent border border-slate-500 hover:border-slate-300 hover:bg-white/5 text-white font-bold px-7 py-3.5 rounded-lg flex items-center justify-center gap-3 text-[14px] transition-colors">
+              <a 
+                href="/contact"
+                className="w-full sm:w-auto bg-transparent border border-slate-500 hover:border-slate-300 hover:bg-white/5 text-white font-bold px-7 py-3.5 rounded-lg flex items-center justify-center gap-3 text-[14px] transition-colors"
+              >
                 <Phone size={16} strokeWidth={2.5} /> Speak to an advisor
-              </button>
+              </a>
             </div>
             
           </div>
