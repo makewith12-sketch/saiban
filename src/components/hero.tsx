@@ -63,7 +63,7 @@ export default function Hero() {
               Borrow with clarity.
               <br />
               Grow with{' '}
-              <span className="text-[#0052cc] font-serif italic font-normal tracking-normal block sm:inline">
+              <span className="text-[#0052cc] font-serif  font-normal tracking-normal block sm:inline">
                 confidence.
               </span>
             </h1>

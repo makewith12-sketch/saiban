@@ -15,6 +15,7 @@ import Articles from './components/articles.tsx'
 import FAQs from './components/faqs.tsx'
 import ContactForm from './components/contactform.tsx'
 import Footer from './components/footer.tsx'
+import FloatingContactActions from './components/FloatingContactActions.tsx'
 
 import ApplyPage from './pages/ApplyPage.tsx'
 import CalculatorPage from './pages/CalculatorPage.tsx'
@@ -28,8 +29,11 @@ import AdminLogin from './pages/AdminLogin.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ArticleDetailPage from './pages/ArticleDetailPage.tsx'
+import CibilScorePage from './pages/CibilScorePage.tsx'
 const pathname = window.location.pathname;
 const articleMatch = pathname.match(/^\/insights\/([^/]+)\/?$/);
+const isAdminRoute = pathname.startsWith('/admin');
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     {pathname === '/home-loans' ? (
@@ -56,6 +60,8 @@ createRoot(document.getElementById('root')!).render(
       <ProtectedRoute>
         <AdminDashboard />
       </ProtectedRoute>
+    ) : pathname === '/cibil-score' ? (
+      <CibilScorePage />
     ) : (
       <>
         <Header />
@@ -72,5 +78,8 @@ createRoot(document.getElementById('root')!).render(
         <Footer />
       </>
     )}
+
+    {/* Global Floating Call & WhatsApp Buttons (Bottom-Right Corner) */}
+    {!isAdminRoute && <FloatingContactActions phoneNumber="+918127727747" />}
   </StrictMode>,
 )
