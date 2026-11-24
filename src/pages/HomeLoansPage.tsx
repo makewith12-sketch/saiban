@@ -766,7 +766,7 @@ export default function HomeLoansPage() {
               <div className="relative mb-10 grid overflow-hidden rounded-[28px] border border-blue-100 bg-white shadow-[0_24px_70px_-45px_rgba(15,53,104,.4)] lg:grid-cols-12">
                 <div className="relative min-h-[220px] overflow-hidden lg:col-span-5">
                   <img
-                    src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1100&q=85"
+                    src="https://plus.unsplash.com/premium_photo-1726863173328-9437d391141a?q=80&w=758&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
                     alt="Hand holding house keys in front of a newly bought residential home"
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover"
