@@ -29,7 +29,6 @@ import {
   Receipt,
   Scale,
   ShieldCheck,
-  Sparkles,
   Star,
   Store,
   TrendingUp,
@@ -134,7 +133,7 @@ const formatINR = (amount: number) =>
     maximumFractionDigits: 0,
   }).format(Math.round(amount));
 
-// --- Interactive 3D Isometric Enterprise Capital Sculpture ---
+// --- Interactive 3D Isometric Enterprise Capital Sculpture (Daylight + Real Human Portrait + 3D Depth Layers) ---
 const Interactive3DBusinessSculpture: React.FC<{
   facilityAmount: number;
   monthlyEmi: number;
@@ -174,7 +173,7 @@ const Interactive3DBusinessSculpture: React.FC<{
         }}
       />
 
-      {/* 3D Ambient Depth Orbs */}
+      {/* 3D Floating Isometric Spheres / Orbs */}
       <div
         className="pointer-events-none absolute -top-10 -right-10 h-56 w-56 rounded-full bg-gradient-to-br from-[#0052cc]/25 to-sky-300/30 blur-2xl transition-transform duration-300"
         style={{ transform: `translate(${tilt.ry * -1.2}px, ${tilt.rx * 1.2}px)` }}
@@ -184,7 +183,7 @@ const Interactive3DBusinessSculpture: React.FC<{
         style={{ transform: `translate(${tilt.ry * 1.3}px, ${tilt.rx * -1.3}px)` }}
       />
 
-      {/* 3D Isometric Cube SVG Illustration */}
+      {/* Decorative 3D Isometric Cube SVG Illustration in Corner */}
       <svg
         viewBox="0 0 120 120"
         className="pointer-events-none absolute top-6 right-6 w-20 h-20 opacity-85 drop-shadow-md"
@@ -228,7 +227,7 @@ const Interactive3DBusinessSculpture: React.FC<{
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Back 3D Card Layer */}
+        {/* Back 3D Card Layer: Corporate OD & Term Credit Pass */}
         <div
           className="absolute -top-7 -right-5 w-64 h-40 rounded-3xl bg-gradient-to-br from-[#0052cc] to-[#0284c7] p-5 text-white shadow-xl opacity-95"
           style={{ transform: 'translateZ(-30px) rotate(6deg)' }}
@@ -249,6 +248,7 @@ const Interactive3DBusinessSculpture: React.FC<{
           className="relative rounded-[30px] bg-white/95 backdrop-blur-xl border border-white p-6 sm:p-7 shadow-[0_28px_55px_-15px_rgba(10,25,47,0.22)]"
           style={{ transform: 'translateZ(26px)' }}
         >
+          {/* Real Human Founder Portrait Header */}
           <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -273,6 +273,7 @@ const Interactive3DBusinessSculpture: React.FC<{
             </span>
           </div>
 
+          {/* Active Sanction Amount */}
           <div className="my-5">
             <div className="flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -310,6 +311,7 @@ const Interactive3DBusinessSculpture: React.FC<{
             </div>
           </div>
 
+          {/* Dark Navy Monthly Outflow Strip */}
           <div className="rounded-2xl bg-[#0a192f] p-4 text-white flex items-center justify-between">
             <div>
               <p className="text-[10px] uppercase tracking-wider text-sky-300 font-semibold">
@@ -359,7 +361,7 @@ export default function BusinessLoansPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Interactive Business Capital State
-  const [facilityAmount, setFacilityAmount] = useState<number>(2500000);
+  const [facilityAmount, setFacilityAmount] = useState<number>(2500000); // ₹25,00,000
   const [tenureMonths, setTenureMonths] = useState<number>(36);
   const [roi, setRoi] = useState<number>(13.5);
 
@@ -371,7 +373,7 @@ export default function BusinessLoansPage() {
   const [odUtilizationPct, setOdUtilizationPct] = useState<number>(55);
 
   // DSCR & GST Eligibility Simulator State
-  const [monthlyGstTurnover, setMonthlyGstTurnover] = useState<number>(1200000);
+  const [monthlyGstTurnover, setMonthlyGstTurnover] = useState<number>(1200000); // ₹12L/mo
   const [netProfitMarginPct, setNetProfitMarginPct] = useState<number>(14);
   const [existingBusinessEmi, setExistingBusinessEmi] = useState<number>(35000);
 
@@ -679,6 +681,7 @@ export default function BusinessLoansPage() {
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+              {/* Left 6 Cols: Editorial Copy + Real Founder Avatars + Dual CTA */}
               <Reveal direction="left" className="lg:col-span-6 space-y-6">
                 <div className="inline-flex items-center gap-2.5 rounded-full border border-blue-200/80 bg-white px-3.5 py-1.5 shadow-sm">
                   <span className="flex h-2 w-2 rounded-full bg-[#8ec843]" />
@@ -718,6 +721,7 @@ export default function BusinessLoansPage() {
                   </a>
                 </div>
 
+                {/* Real Human Founder Social Proof Strip */}
                 <div className="pt-4 flex flex-wrap items-center gap-4">
                   <div className="flex -space-x-3">
                     {[
@@ -748,6 +752,7 @@ export default function BusinessLoansPage() {
                 </div>
               </Reveal>
 
+              {/* Right 6 Cols: Interactive 3D Isometric Enterprise Capital Sculpture */}
               <Reveal direction="right" delay={100} className="lg:col-span-6">
                 <ScrollParallax speed={-22}>
                   <Interactive3DBusinessSculpture
@@ -779,6 +784,7 @@ export default function BusinessLoansPage() {
                   </h2>
                 </div>
 
+                {/* Interactive Facility Tabs */}
                 <div className="flex flex-wrap gap-2">
                   {facilities.map((item) => {
                     const Icon = item.icon;
@@ -805,6 +811,7 @@ export default function BusinessLoansPage() {
 
             <Reveal delay={80} direction="scale">
               <div className="grid grid-cols-1 lg:grid-cols-12 rounded-[32px] overflow-hidden border border-slate-200/90 bg-[#f8fafc] shadow-xl shadow-slate-900/5">
+                {/* Left 7 Cols: Real Human Workplace Photography + Glass Overlay */}
                 <div className="relative min-h-[350px] sm:min-h-[430px] lg:col-span-7 overflow-hidden">
                   <img
                     src={currentFacility.image}
@@ -849,6 +856,7 @@ export default function BusinessLoansPage() {
                   </div>
                 </div>
 
+                {/* Right 5 Cols: Structured Spec Sheet & Apply CTA */}
                 <div className="lg:col-span-5 p-7 sm:p-10 flex flex-col justify-between bg-white">
                   <div>
                     <div className="flex items-center justify-between text-xs font-bold text-slate-400">
@@ -927,6 +935,7 @@ export default function BusinessLoansPage() {
             </Reveal>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+              {/* Left 7 Cols: Sliders + Annual Amortization Schedule */}
               <Reveal direction="left" className="lg:col-span-7 flex flex-col gap-6">
                 <div className="rounded-[28px] bg-white border border-blue-100 p-6 sm:p-8 shadow-sm space-y-6">
                   <div>
@@ -1064,6 +1073,7 @@ export default function BusinessLoansPage() {
                 </div>
               </Reveal>
 
+              {/* Right 5 Cols: Dark Navy Output & OD Efficiency Card */}
               <Reveal direction="right" delay={100} className="lg:col-span-5 flex">
                 <div className="w-full rounded-[28px] bg-[#0a192f] p-7 sm:p-9 text-white flex flex-col justify-between shadow-xl">
                   <div className="space-y-6">
@@ -1494,6 +1504,7 @@ export default function BusinessLoansPage() {
         {/* ==================== 7. REAL FOUNDER IMPACT SHOWCASE + SECTOR MATRIX ==================== */}
         <section className="py-20 lg:py-28 bg-white border-b border-slate-200/80">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-20">
+            {/* Part A: Interactive Real-Human Founder Spotlight */}
             <div>
               <Reveal>
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
@@ -1510,6 +1521,7 @@ export default function BusinessLoansPage() {
                     </h2>
                   </div>
 
+                  {/* Founder Selector Avatars */}
                   <div className="flex flex-wrap gap-2.5">
                     {founderStories.map((story, idx) => (
                       <button
@@ -1574,6 +1586,7 @@ export default function BusinessLoansPage() {
               </Reveal>
             </div>
 
+            {/* Part B: Interactive 6-Sector Underwriting Matrix */}
             <div>
               <Reveal>
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -1666,6 +1679,7 @@ export default function BusinessLoansPage() {
         <section className="py-20 lg:py-24 bg-[#f4f8ff]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start mb-16">
+              {/* Left 5 Cols: RBI MSME Fair-Practice Guardrails */}
               <Reveal direction="left" className="lg:col-span-5">
                 <div className="rounded-[30px] bg-[#0a192f] p-7 sm:p-9 text-white space-y-6 shadow-xl">
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-bold text-[#8ec843]">
@@ -1715,6 +1729,7 @@ export default function BusinessLoansPage() {
                 </div>
               </Reveal>
 
+              {/* Right 7 Cols: Interactive FAQs */}
               <div className="lg:col-span-7 space-y-3.5">
                 <Reveal>
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#0052cc]">
