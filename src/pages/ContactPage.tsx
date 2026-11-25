@@ -121,7 +121,7 @@ export default function ContactPage() {
                     <div>
                       <h4 className="text-sm font-bold text-[#0a192f]">Visit Office</h4>
                       <p className="text-sm text-slate-600 leading-relaxed mt-0.5">
-                        Office No - 101, Elite Residency, near Shrirang Society, Shrirang Society, Thane West, Thane, Maharashtra 400601
+                        Thane West, Thane, Maharashtra 400601
                       </p>
                     </div>
                   </div>
