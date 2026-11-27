@@ -30,6 +30,13 @@ import AdminDashboard from './pages/AdminDashboard.tsx'
 import ProtectedRoute from './components/ProtectedRoute.tsx'
 import ArticleDetailPage from './pages/ArticleDetailPage.tsx'
 import CibilScorePage from './pages/CibilScorePage.tsx'
+import SecuredTermLoan from './pages/SecuredTermLoan.tsx'
+import WorkingCapital from './pages/WorkingCapital.tsx'
+import MachineryEquiment from './pages/MachineryEquipment.tsx'
+import InvoiceDiscounting from './pages/InvoiceDiscounting.tsx'
+import SupplyChainFinance from './pages/SupplyChainFinance.tsx'
+import LastMileFunding from './pages/LastMileFunding.tsx'
+import BusinessEligibilityCheck from './pages/BusinessEligibilityCheck.tsx'
 const pathname = window.location.pathname;
 const articleMatch = pathname.match(/^\/insights\/([^/]+)\/?$/);
 const isAdminRoute = pathname.startsWith('/admin');
@@ -62,6 +69,20 @@ createRoot(document.getElementById('root')!).render(
       </ProtectedRoute>
     ) : pathname === '/cibil-score' ? (
       <CibilScorePage />
+    ) : pathname === '/business-loans/secured-term-loan' ? (
+      <SecuredTermLoan />
+    ) : pathname === '/business-loans/working-capital' ? (
+      <WorkingCapital />
+    ) : pathname === '/business-loans/machinery-equipment' ? (
+      <MachineryEquiment />
+    ) : pathname === '/business-loans/invoice-discounting' ? (
+      <InvoiceDiscounting />
+    ) : pathname === '/business-loans/supply-chain-finance' ? (
+      <SupplyChainFinance />
+    ) : pathname === '/business-loans/last-mile-funding' ? (
+      <LastMileFunding />
+    ) : pathname === '/business-loans/eligibility-check' ? (
+      <BusinessEligibilityCheck />
     ) : (
       <>
         <Header />
