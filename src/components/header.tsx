@@ -14,7 +14,6 @@ import {
   Network,
   Zap,
   CheckCircle2,
-  Sparkles,
 } from 'lucide-react';
 
 /** Custom Multi-Color Credit Score Gauge SVG */
@@ -662,7 +661,6 @@ export default function Header() {
               onClick={handleApplyClick}
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0052cc] to-[#0065ff] active:opacity-95 text-white font-bold text-[14.5px] sm:text-[15px] px-6 py-3 rounded-xl shadow-[0_8px_20px_-4px_rgba(0,82,204,0.4)] cursor-pointer"
             >
-              <Sparkles size={16} />
               <span>Apply now</span>
               <ArrowRight size={16} strokeWidth={2.5} />
             </button>
