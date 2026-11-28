@@ -146,7 +146,7 @@ export default function Header() {
     },
     {
       label: 'EMI Calculator',
-      href: 'http://localhost:5173/calculator',
+      href: '/calculator',
       icon: (
         <span className="flex h-5.5 w-5.5 xl:h-6 xl:w-6 shrink-0 items-center justify-center rounded-lg bg-[#0052cc]/10 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition-colors duration-200">
           <Calculator className="h-3.5 w-3.5" />
