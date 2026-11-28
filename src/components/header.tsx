@@ -1,6 +1,21 @@
 // src/components/header.tsx
 import { useState, useRef, useEffect, type ReactNode } from 'react';
-import { Phone, Menu, X, Calculator, ChevronDown, ArrowRight } from 'lucide-react';
+import {
+  Phone,
+  Menu,
+  X,
+  Calculator,
+  ChevronDown,
+  ArrowRight,
+  Building2,
+  Briefcase,
+  Cog,
+  FileSpreadsheet,
+  Network,
+  Zap,
+  CheckCircle2,
+  Sparkles,
+} from 'lucide-react';
 
 /** Custom Multi-Color Credit Score Gauge SVG */
 function CreditGaugeIcon({ className = 'h-5 w-7' }: { className?: string }) {
@@ -42,12 +57,15 @@ function CreditGaugeIcon({ className = 'h-5 w-7' }: { className?: string }) {
 interface SubMenuItem {
   label: string;
   href: string;
+  subtitle?: string;
+  icon?: ReactNode;
 }
 
 interface NavLinkItem {
   label: string;
   href: string;
   icon?: ReactNode;
+  badge?: string;
   dropdownItems?: SubMenuItem[];
 }
 
@@ -56,21 +74,59 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(118);
+
+  const headerRef = useRef<HTMLElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Business Loans dropdown items (exact initial items)
+  // Business Loans dropdown items (all exact routes & labels preserved)
   const businessLoanSubItems: SubMenuItem[] = [
-    { label: 'Secured term loan', href: '/business-loans/secured-term-loan' },
-    { label: 'Working capital', href: '/business-loans/working-capital' },
-    { label: 'Machinery & equipment', href: '/business-loans/machinery-equipment' },
-    { label: 'Invoice discounting', href: '/business-loans/invoice-discounting' },
-    { label: 'Supply chain finance', href: '/business-loans/supply-chain-finance' },
-    { label: 'Last-mile funding', href: '/business-loans/last-mile-funding' },
-    { label: 'Eligibility check', href: '/business-loans/eligibility-check' },
+    {
+      label: 'Secured term loan',
+      href: '/business-loans/secured-term-loan',
+      subtitle: 'Long-term asset-backed growth capital',
+      icon: <Building2 className="h-4 w-4" />,
+    },
+    {
+      label: 'Working capital',
+      href: '/business-loans/working-capital',
+      subtitle: 'Manage daily operations & cash flow',
+      icon: <Briefcase className="h-4 w-4" />,
+    },
+    {
+      label: 'Machinery & equipment',
+      href: '/business-loans/machinery-equipment',
+      subtitle: 'Upgrade plants, tools & technology',
+      icon: <Cog className="h-4 w-4" />,
+    },
+    {
+      label: 'Invoice discounting',
+      href: '/business-loans/invoice-discounting',
+      subtitle: 'Unlock cash tied in unpaid invoices',
+      icon: <FileSpreadsheet className="h-4 w-4" />,
+    },
+    {
+      label: 'Supply chain finance',
+      href: '/business-loans/supply-chain-finance',
+      subtitle: 'Optimize vendor & dealer liquidity',
+      icon: <Network className="h-4 w-4" />,
+    },
+    {
+      label: 'Last-mile funding',
+      href: '/business-loans/last-mile-funding',
+      subtitle: 'Bridge urgent project completion gaps',
+      icon: <Zap className="h-4 w-4" />,
+    },
+    {
+      label: 'Eligibility check',
+      href: '/business-loans/eligibility-check',
+      subtitle: 'Instant pre-qualification assessment',
+      icon: <CheckCircle2 className="h-4 w-4" />,
+    },
   ];
 
-  // Serial-wise desktop navigation links (exact initial items)
-  const desktopNavLinks: NavLinkItem[] = [
+  // Primary loan product links
+  const primaryLoanLinks: NavLinkItem[] = [
     { label: 'Home Loans', href: '/home-loans' },
     { label: 'Personal Loans', href: '/personal-loans' },
     {
@@ -78,23 +134,28 @@ export default function Header() {
       href: '/business-loans',
       dropdownItems: businessLoanSubItems,
     },
+  ];
+
+  // Interactive financial tool links
+  const utilityToolLinks: NavLinkItem[] = [
     {
       label: 'CIBIL Score',
       href: '/cibil-score',
+      badge: 'Free',
       icon: <CreditGaugeIcon className="h-4 w-6 shrink-0" />,
     },
     {
       label: 'EMI Calculator',
       href: 'http://localhost:5173/calculator',
       icon: (
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-blue-50 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition-colors">
+        <span className="flex h-5.5 w-5.5 xl:h-6 xl:w-6 shrink-0 items-center justify-center rounded-lg bg-[#0052cc]/10 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition-colors duration-200">
           <Calculator className="h-3.5 w-3.5" />
         </span>
       ),
     },
   ];
 
-  // Mobile drawer links (exact initial items)
+  // Mobile & Tablet drawer links
   const mobileDrawerLinks: NavLinkItem[] = [
     { label: 'Home Loans', href: '/home-loans' },
     { label: 'Personal Loans', href: '/personal-loans' },
@@ -104,20 +165,52 @@ export default function Header() {
       dropdownItems: businessLoanSubItems,
     },
     { label: 'About', href: '/about' },
-    // { label: 'Insights', href: '/insights' },
   ];
 
-  // Scroll listener for dynamic sticky header compression & glass effect
+  // Dynamically measure header height so mobile/tablet drawer aligns beneath the floating card
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.getBoundingClientRect().height);
+      }
+    };
+
+    updateHeaderHeight();
+    const observer = new ResizeObserver(updateHeaderHeight);
+    if (headerRef.current) {
+      observer.observe(headerRef.current);
+    }
+    window.addEventListener('resize', updateHeaderHeight, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeaderHeight);
+    };
+  }, [isScrolled]);
+
+  // Auto-close mobile drawer if viewport expands past lg (1024px)
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handleMediaChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    mediaQuery.addEventListener('change', handleMediaChange);
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  // Scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 14);
+      setIsScrolled(window.scrollY > 18);
     };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile drawer is open
+  // Lock body scroll when mobile/tablet drawer is open
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
     return () => {
@@ -125,15 +218,25 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
-  // Close desktop dropdown when clicking outside
+  // Close desktop dropdown when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpenDropdown(null);
       }
     };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+        setIsMobileMenuOpen(false);
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleApplyClick = () => {
@@ -143,259 +246,358 @@ export default function Header() {
 
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        .header-grid {
-          background-color: #fcfcfd;
-          background-size: 32px 32px;
-          background-image: 
-            linear-gradient(to right, rgba(0, 82, 204, 0.028) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 82, 204, 0.028) 1px, transparent 1px);
-        }
-        .header-grid-scrolled {
-          background-color: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          background-size: 32px 32px;
-          background-image: 
-            linear-gradient(to right, rgba(0, 82, 204, 0.02) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 82, 204, 0.02) 1px, transparent 1px);
-        }
-      `,
-        }}
-      />
-
       <header
-        className={`sticky top-0 left-0 right-0 w-full z-50 font-sans transition-all duration-300 ${
-          isScrolled
-            ? 'header-grid-scrolled border-b border-slate-200/90 shadow-[0_8px_28px_-6px_rgba(10,25,47,0.1)]'
-            : 'header-grid border-b border-slate-200/80'
+        ref={headerRef}
+        className={`sticky top-0 left-0 right-0 z-50 w-full font-sans transition-all duration-300 pt-2.5 px-3 sm:pt-3 sm:px-4 ${
+          isScrolled ? 'lg:pt-2.5 xl:pt-3 lg:px-4 xl:px-6' : 'lg:pt-0 lg:px-0'
         }`}
       >
-        {/* Top signature royal-blue accent hairline */}
-        <div className="h-[2.5px] w-full bg-gradient-to-r from-[#0a192f] via-[#0052cc] to-[#2684ff]" />
-
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+        {/* Main Header Shell: Always Floating Card on Mobile/Tablet (<1024px), Dynamic on Desktop */}
+        <div
+          className={`mx-auto transition-all duration-300 overflow-hidden lg:overflow-visible rounded-2xl sm:rounded-[20px] bg-white/95 backdrop-blur-xl border border-slate-300/90 ring-1 ring-white/80 shadow-[0_10px_28px_-6px_rgba(10,25,47,0.14),0_2px_6px_-1px_rgba(10,25,47,0.06)] ${
+            isScrolled
+              ? 'max-w-[1400px] lg:bg-white/92 lg:border-slate-200/85 lg:rounded-2xl lg:shadow-[0_12px_36px_-8px_rgba(10,25,47,0.12)]'
+              : 'max-w-full lg:max-w-full lg:rounded-none lg:border-x-0 lg:border-t-0 lg:border-b lg:border-slate-200/75 lg:ring-0 lg:shadow-none'
+          }`}
+        >
+          {/* Top royal-blue gradient hairline */}
           <div
-            className={`flex items-center justify-between gap-3 transition-all duration-300 ${
-              isScrolled ? 'h-[4rem] lg:h-[4.4rem]' : 'h-[4.85rem] lg:h-[5.4rem]'
+            className={`h-[3px] lg:h-[2.5px] w-full bg-gradient-to-r from-[#0a192f] via-[#0052cc] to-[#38bdf8] transition-opacity duration-300 ${
+              isScrolled ? 'lg:opacity-0' : 'opacity-100'
             }`}
-          >
-            {/* 1. Logo + SaibanCapital Brand Name */}
-            <div className="flex-shrink-0 flex items-center">
-              <a href="/" className="flex items-center gap-2.5 sm:gap-3 group">
-                <img
-                  src="/logo12.jpeg"
-                  alt="SaibanCapital Logo"
-                  className={`w-auto object-contain rounded-lg ring-1 ring-slate-200/80 transition-all duration-300 group-hover:scale-[1.03] ${
-                    isScrolled ? 'h-8 sm:h-9' : 'h-9 sm:h-10 lg:h-11'
-                  }`}
-                />
-                <span
-                  className={`font-extrabold tracking-tight text-[#0a192f] group-hover:text-[#0052cc] transition-all duration-300 ${
-                    isScrolled
-                      ? 'text-[17px] sm:text-[19px] lg:text-[20px]'
-                      : 'text-lg sm:text-xl lg:text-[21px]'
-                  }`}
-                >
-                  Saiban<span className="text-[#0052cc]">Capital</span>
-                </span>
-              </a>
-            </div>
+          />
 
-            {/* 2. Desktop Serial-Wise Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-2 xl:gap-4" ref={dropdownRef}>
-              {desktopNavLinks.map((link) =>
-                link.dropdownItems ? (
-                  <div
-                    key={link.label}
-                    className="relative"
-                    onMouseEnter={() => setOpenDropdown(link.label)}
-                    onMouseLeave={() => setOpenDropdown(null)}
-                  >
-                    <div
-                      className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 transition-colors ${
-                        openDropdown === link.label
-                          ? 'bg-blue-50/80 text-[#0052cc]'
-                          : 'hover:bg-slate-100/70'
+          <div className="max-w-[1440px] mx-auto px-3 sm:px-5 md:px-6 lg:px-5 xl:px-8">
+            <div
+              className={`flex items-center justify-between gap-2 sm:gap-3 lg:gap-2 xl:gap-4 transition-all duration-300 ${
+                isScrolled
+                  ? 'h-[3.6rem] sm:h-[3.85rem] lg:h-[4.15rem] xl:h-[4.35rem]'
+                  : 'h-[3.85rem] sm:h-[4.25rem] lg:h-[4.75rem] xl:h-[5rem]'
+              }`}
+            >
+              {/* 1. Brand Identity */}
+              <div className="flex items-center shrink-0 min-w-0">
+                <a
+                  href="/"
+                  className="group flex items-center gap-2 sm:gap-2.5 xl:gap-3 focus:outline-none"
+                >
+                  <div className="relative overflow-hidden rounded-xl border border-slate-200/90 shadow-xs bg-white p-0.5 transition-transform duration-300 group-hover:scale-[1.04] shrink-0">
+                    <img
+                      src="/logo12.jpeg"
+                      alt="SaibanCapital Logo"
+                      className={`w-auto object-contain rounded-lg transition-all duration-300 ${
+                        isScrolled
+                          ? 'h-7.5 sm:h-8 lg:h-8 xl:h-8.5'
+                          : 'h-8 sm:h-9 lg:h-9 xl:h-10'
+                      }`}
+                    />
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span
+                      className={`font-extrabold tracking-tight text-[#0a192f] leading-none truncate transition-all duration-300 ${
+                        isScrolled
+                          ? 'text-[16px] sm:text-[18px] lg:text-[17px] xl:text-[19px]'
+                          : 'text-[16.5px] sm:text-[19px] lg:text-[18.5px] xl:text-[21px]'
                       }`}
                     >
+                      Saiban<span className="text-[#0052cc]">Capital</span>
+                    </span>
+                    <span className="hidden min-[380px]:inline-block lg:hidden xl:inline-block text-[9px] sm:text-[9.5px] xl:text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400 mt-0.5">
+                      Smart Lending
+                    </span>
+                  </div>
+                </a>
+              </div>
+
+              {/* 2. Desktop Navigation (lg: 1024px+ fluidly scaled to 2xl) */}
+              <div
+                className="hidden lg:flex items-center gap-2 xl:gap-4"
+                ref={dropdownRef}
+              >
+                {/* Core Loan Products Pill Container */}
+                <nav
+                  aria-label="Primary Loan Products"
+                  className="flex items-center gap-0.5 xl:gap-1 rounded-full bg-slate-100/85 p-1 border border-slate-200/60"
+                >
+                  {primaryLoanLinks.map((link) =>
+                    link.dropdownItems ? (
+                      <div
+                        key={link.label}
+                        className="relative"
+                        onMouseEnter={() => setOpenDropdown(link.label)}
+                        onMouseLeave={() => setOpenDropdown(null)}
+                      >
+                        <div
+                          className={`inline-flex items-center gap-1 rounded-full px-2.5 xl:px-3.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-semibold transition-all duration-200 ${
+                            openDropdown === link.label
+                              ? 'bg-white text-[#0052cc] shadow-sm ring-1 ring-slate-200/70'
+                              : 'text-[#0a192f] hover:bg-white/70 hover:text-[#0052cc]'
+                          }`}
+                        >
+                          <a href={link.href} className="whitespace-nowrap">
+                            {link.label}
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setOpenDropdown(
+                                openDropdown === link.label ? null : link.label
+                              )
+                            }
+                            aria-label={`Toggle ${link.label} menu`}
+                            aria-expanded={openDropdown === link.label}
+                            className="p-0.5 text-current cursor-pointer focus:outline-none"
+                          >
+                            <ChevronDown
+                              size={14}
+                              strokeWidth={2.5}
+                              className={`transition-transform duration-200 ${
+                                openDropdown === link.label
+                                  ? 'rotate-180 text-[#0052cc]'
+                                  : 'text-slate-500'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {/* Viewport-Safe 2-Column Rich Mega-Dropdown */}
+                        <div
+                          className={`absolute lg:left-0 xl:left-1/2 xl:-translate-x-1/2 top-full pt-3 w-[480px] xl:w-[540px] max-w-[calc(100vw-2rem)] z-50 transition-all duration-200 origin-top ${
+                            openDropdown === link.label
+                              ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+                              : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+                          }`}
+                        >
+                          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_50px_-12px_rgba(10,25,47,0.18)] overflow-hidden">
+                            <div className="flex items-center justify-between px-4 xl:px-5 py-2.5 xl:py-3 bg-slate-50/90 border-b border-slate-100">
+                              <span className="text-[11px] xl:text-[11.5px] font-bold uppercase tracking-wider text-slate-500">
+                                Business Financing Solutions
+                              </span>
+                              <a
+                                href={link.href}
+                                onClick={() => setOpenDropdown(null)}
+                                className="inline-flex items-center gap-1 text-[12px] font-bold text-[#0052cc] hover:underline"
+                              >
+                                <span>Explore all</span>
+                                <ArrowRight size={12} />
+                              </a>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-1.5 p-2.5 xl:p-3">
+                              {link.dropdownItems.map((subItem) => (
+                                <a
+                                  key={subItem.label}
+                                  href={subItem.href}
+                                  onClick={() => setOpenDropdown(null)}
+                                  className="group/item flex items-start gap-2.5 xl:gap-3 p-2 xl:p-2.5 rounded-xl hover:bg-blue-50/70 transition-all duration-150"
+                                >
+                                  <span className="mt-0.5 flex h-7.5 w-7.5 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover/item:bg-[#0052cc] group-hover/item:text-white transition-colors">
+                                    {subItem.icon}
+                                  </span>
+                                  <div className="flex flex-col min-w-0">
+                                    <span className="text-[13px] xl:text-[13.5px] font-bold text-[#0a192f] group-hover/item:text-[#0052cc] transition-colors flex items-center gap-1">
+                                      <span className="truncate">{subItem.label}</span>
+                                      <ArrowRight
+                                        size={12}
+                                        className="shrink-0 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all"
+                                      />
+                                    </span>
+                                    {subItem.subtitle && (
+                                      <span className="text-[11px] xl:text-[11.5px] text-slate-500 line-clamp-1 mt-0.5">
+                                        {subItem.subtitle}
+                                      </span>
+                                    )}
+                                  </div>
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
                       <a
+                        key={link.label}
                         href={link.href}
-                        className={`text-[14px] font-semibold transition-colors whitespace-nowrap ${
-                          openDropdown === link.label
-                            ? 'text-[#0052cc]'
-                            : 'text-[#0a192f] hover:text-[#0052cc]'
-                        }`}
+                        className="rounded-full px-2.5 xl:px-3.5 py-1.5 text-[12.5px] xl:text-[13.5px] font-semibold text-[#0a192f] hover:bg-white hover:text-[#0052cc] hover:shadow-sm transition-all duration-200 whitespace-nowrap"
                       >
                         {link.label}
                       </a>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setOpenDropdown(openDropdown === link.label ? null : link.label)
-                        }
-                        aria-label={`Toggle ${link.label} menu`}
-                        aria-expanded={openDropdown === link.label}
-                        className="p-0.5 text-current cursor-pointer"
-                      >
-                        <ChevronDown
-                          size={15}
-                          strokeWidth={2.5}
-                          className={`transition-transform duration-200 ${
-                            openDropdown === link.label ? 'rotate-180 text-[#0052cc]' : ''
-                          }`}
-                        />
-                      </button>
-                    </div>
+                    )
+                  )}
+                </nav>
 
-                    {/* Clean Animated Dropdown Card */}
-                    <div
-                      className={`absolute left-0 top-full pt-2 w-64 z-50 transition-all duration-200 origin-top-left ${
-                        openDropdown === link.label
-                          ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
-                          : 'opacity-0 scale-95 -translate-y-1.5 pointer-events-none'
-                      }`}
+                {/* Vertical Divider */}
+                <div className="h-5 w-px bg-slate-200 shrink-0" aria-hidden="true" />
+
+                {/* Utility Tools (CIBIL Score & EMI Calculator) */}
+                <div className="flex items-center gap-1.5 xl:gap-2">
+                  {utilityToolLinks.map((tool) => (
+                    <a
+                      key={tool.label}
+                      href={tool.href}
+                      className="group relative inline-flex items-center gap-1.5 xl:gap-2 rounded-full border border-slate-200/90 bg-white px-2.5 xl:px-3 py-1.5 text-[12px] xl:text-[13px] font-bold text-[#0a192f] hover:border-[#0052cc]/40 hover:bg-blue-50/50 hover:text-[#0052cc] shadow-[0_1px_4px_rgba(10,25,47,0.04)] transition-all duration-200 whitespace-nowrap"
                     >
-                      <div className="bg-white rounded-xl border border-slate-200/90 shadow-[0_14px_34px_rgba(10,25,47,0.12)] p-2 flex flex-col gap-0.5">
-                        {link.dropdownItems.map((subItem) => (
-                          <a
-                            key={subItem.label}
-                            href={subItem.href}
-                            onClick={() => setOpenDropdown(null)}
-                            className="group/item flex items-center justify-between px-3.5 py-2.5 rounded-lg text-[14px] font-medium text-[#1e293b] hover:bg-blue-50/80 hover:text-[#0052cc] transition-colors"
-                          >
-                            <span>{subItem.label}</span>
-                            <ArrowRight
-                              size={13}
-                              className="text-[#0052cc] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200"
-                            />
-                          </a>
-                        ))}
-                      </div>
-                    </div>
+                      {tool.icon}
+                      <span>{tool.label}</span>
+                      {tool.badge && (
+                        <span className="hidden xl:inline-block rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-emerald-700 leading-none">
+                          {tool.badge}
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Desktop Right Actions (Support Phone + Primary CTA) */}
+              <div className="hidden lg:flex items-center gap-2 xl:gap-3.5 shrink-0">
+                <a
+                  href="tel:+918127727747"
+                  className="group flex items-center gap-2 rounded-full p-1.5 xl:px-3 xl:py-1.5 text-[#0a192f] hover:bg-slate-100/80 transition-colors"
+                  title="Call Advisor: +91 8127727747"
+                  aria-label="Call +91 8127727747"
+                >
+                  <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition-colors shrink-0">
+                    <Phone size={14} strokeWidth={2.5} />
+                    <span className="absolute top-0 right-0 flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    </span>
+                  </span>
+                  <div className="hidden 2xl:flex flex-col text-left leading-tight">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                      Advisor Desk
+                    </span>
+                    <span className="text-[13.5px] font-bold text-[#0a192f] group-hover:text-[#0052cc] transition-colors">
+                      +91 8127727747
+                    </span>
                   </div>
-                ) : (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className={`group inline-flex items-center gap-1.5 text-[14px] font-semibold transition-all duration-200 whitespace-nowrap ${
-                      link.icon
-                        ? 'rounded-full border border-blue-200/80 bg-white px-3 py-1.5 text-[#0052cc] hover:border-[#0052cc] hover:bg-blue-50/70 hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(0,82,204,0.06)]'
-                        : 'rounded-lg px-2.5 py-1.5 text-[#0a192f] hover:bg-slate-100/70 hover:text-[#0052cc]'
-                    }`}
-                  >
-                    {link.icon}
-                    <span>{link.label}</span>
-                  </a>
-                )
-              )}
-            </nav>
+                  <span className="hidden xl:inline 2xl:hidden text-[13px] font-bold whitespace-nowrap">
+                    +91 8127727747
+                  </span>
+                </a>
 
-            {/* 3. Desktop Actions (Phone & Apply Button) */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-5 shrink-0">
+                <button
+                  onClick={handleApplyClick}
+                  className="group inline-flex items-center gap-1.5 xl:gap-2 bg-gradient-to-r from-[#0052cc] to-[#0065ff] hover:from-[#003d8f] hover:to-[#0052cc] active:scale-[0.98] text-white font-bold text-[12.5px] xl:text-[13.5px] px-3.5 xl:px-5 py-2 xl:py-2.5 rounded-full transition-all duration-200 shadow-[0_6px_18px_-3px_rgba(0,82,204,0.38)] hover:shadow-[0_8px_22px_-3px_rgba(0,82,204,0.5)] whitespace-nowrap cursor-pointer"
+                >
+                  <span>Apply now</span>
+                  <span className="flex h-4.5 w-4.5 xl:h-5 xl:w-5 items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:translate-x-0.5">
+                    <ArrowRight size={11.5} strokeWidth={2.75} />
+                  </span>
+                </button>
+              </div>
+
+              {/* 4. Mobile & Tablet Right Controls (< 1024px) */}
+              <div className="lg:hidden flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                {/* Tablet Direct Call Pill (visible md to lg) */}
+                <a
+                  href="tel:+918127727747"
+                  className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[12.5px] font-bold text-[#0a192f] hover:border-[#0052cc]/40 hover:text-[#0052cc] transition-colors"
+                >
+                  <Phone size={13.5} strokeWidth={2.5} className="text-[#0052cc]" />
+                  <span>+91 8127727747</span>
+                </a>
+
+                <button
+                  onClick={handleApplyClick}
+                  className="inline-flex items-center gap-1 bg-gradient-to-r from-[#0052cc] to-[#0065ff] active:from-[#003d8f] active:to-[#0052cc] text-white font-bold text-[12px] sm:text-[13px] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-[0_4px_12px_rgba(0,82,204,0.3)] transition-all whitespace-nowrap cursor-pointer"
+                >
+                  <span className="max-[350px]:hidden">Apply now</span>
+                  <span className="hidden max-[350px]:inline">Apply</span>
+                  <ArrowRight size={13} strokeWidth={2.5} />
+                </button>
+
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  aria-label="Toggle Menu"
+                  aria-expanded={isMobileMenuOpen}
+                  className={`flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border transition-all cursor-pointer active:scale-95 ${
+                    isMobileMenuOpen
+                      ? 'border-[#0052cc] bg-[#0052cc] text-white shadow-sm'
+                      : 'border-slate-300/90 bg-slate-50 text-[#0a192f] hover:border-[#0052cc]/50 hover:text-[#0052cc]'
+                  }`}
+                >
+                  {isMobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile & Tablet Integrated Quick-Access Strip (< 1024px) */}
+          <div className="lg:hidden w-full bg-slate-50/95 border-t border-slate-200/90">
+            <div className="max-w-3xl mx-auto grid grid-cols-2 divide-x divide-slate-200 py-1.5 px-1 sm:px-4">
+              {/* Left: Free CIBIL Score */}
               <a
-                href="tel:+918127727747"
-                className="group flex items-center gap-2 text-[#0a192f] hover:text-[#0052cc] font-semibold text-[14px] whitespace-nowrap transition-colors"
+                href="/cibil-score"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 px-1.5 sm:px-3 py-1 rounded-xl active:bg-blue-100/70 hover:bg-blue-50/70 transition-colors min-w-0"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-[#0052cc] group-hover:bg-[#0052cc] group-hover:text-white transition-colors">
-                  <Phone size={13.5} strokeWidth={2.5} />
+                <CreditGaugeIcon className="h-4 w-6 sm:h-4.5 sm:w-6.5 shrink-0" />
+                <span className="text-[12px] sm:text-[13px] font-extrabold text-[#0a192f] tracking-tight truncate">
+                  Free <span className="text-[#0052cc]">CIBIL Score</span>
                 </span>
-                <span>+91 8127727747</span>
               </a>
-              <button
-                onClick={handleApplyClick}
-                className="group inline-flex items-center gap-1.5 bg-[#0052cc] hover:bg-[#003d8f] active:scale-[0.98] text-white font-bold text-[14px] px-5 py-2.5 rounded-xl transition-all duration-200 shadow-[0_4px_14px_rgba(0,82,204,0.26)] hover:shadow-[0_6px_20px_rgba(0,82,204,0.36)] whitespace-nowrap cursor-pointer"
-              >
-                <span>Apply now</span>
-                <ArrowRight
-                  size={15}
-                  strokeWidth={2.5}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
-                />
-              </button>
-            </div>
 
-            {/* Mobile Right Controls */}
-            <div className="lg:hidden flex items-center gap-2">
-              <button
-                onClick={handleApplyClick}
-                className="bg-[#0052cc] active:bg-[#003d8f] text-white font-bold text-[12.5px] px-3 py-1.5 rounded-lg shadow-[0_2px_10px_rgba(0,82,204,0.24)] transition-all"
+              {/* Right: EMI Calculator */}
+              <a
+                href="http://localhost:5173/calculator"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 px-1.5 sm:px-3 py-1 rounded-xl active:bg-blue-100/70 hover:bg-blue-50/70 transition-colors min-w-0"
               >
-                Apply now
-              </button>
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle Menu"
-                aria-expanded={isMobileMenuOpen}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200/80 bg-white text-[#0a192f] hover:text-[#0052cc] active:scale-95 transition-all"
-              >
-                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
+                <span className="flex h-5 w-5 sm:h-5.5 sm:w-5.5 shrink-0 items-center justify-center rounded-md bg-[#0052cc]/12 text-[#0052cc]">
+                  <Calculator className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                </span>
+                <span className="text-[12px] sm:text-[13px] font-extrabold text-[#0a192f] tracking-tight truncate">
+                  EMI <span className="text-[#0052cc]">Calculator</span>
+                </span>
+              </a>
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile-Only Sticky Quick-Access Strip */}
-        <div
-          className={`lg:hidden w-full bg-white/95 border-t border-slate-100 transition-shadow duration-300 ${
-            isScrolled ? 'shadow-[0_4px_12px_rgba(10,25,47,0.06)]' : ''
-          }`}
-        >
-          <div className="grid grid-cols-2 divide-x divide-slate-200/80 py-2 px-2">
-            {/* Left: Free CIBIL Score */}
-            <a
-              href="/cibil-score"
-              className="flex items-center justify-center gap-2 px-2 py-1 rounded-md active:bg-blue-50/70 transition-colors"
-            >
-              <CreditGaugeIcon className="h-4.5 w-6.5 shrink-0" />
-              <span className="text-[12.5px] font-extrabold text-[#0052cc] tracking-tight whitespace-nowrap">
-                Free CIBIL Score
-              </span>
-            </a>
+      {/* Mobile & Tablet Backdrop */}
+      <div
+        className={`lg:hidden fixed inset-0 bg-[#0a192f]/45 backdrop-blur-xs transition-opacity duration-300 z-40 ${
+          isMobileMenuOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
 
-            {/* Right: EMI Calculator */}
-            <a
-              href="http://localhost:5173/calculator"
-              className="flex items-center justify-center gap-2 px-2 py-1 rounded-md active:bg-blue-50/70 transition-colors"
-            >
-              <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-md bg-blue-50 text-[#0052cc]">
-                <Calculator className="h-3.5 w-3.5" />
-              </span>
-              <span className="text-[12.5px] font-extrabold text-[#0052cc] tracking-tight whitespace-nowrap">
-                EMI Calculator
-              </span>
-            </a>
+      {/* Mobile & Tablet Floating Menu Drawer (Matches Floating Header Card) */}
+      <div
+        style={{
+          top: `${headerHeight + 8}px`,
+          maxHeight: isMobileMenuOpen ? `calc(100dvh - ${headerHeight + 20}px)` : '0px',
+        }}
+        className={`lg:hidden fixed left-3 right-3 sm:left-4 sm:right-4 bg-white/98 backdrop-blur-xl border border-slate-300/90 ring-1 ring-white/80 shadow-[0_20px_48px_-10px_rgba(10,25,47,0.22)] px-4 sm:px-6 flex flex-col gap-1.5 z-50 overflow-y-auto transition-all duration-300 ease-out origin-top rounded-2xl sm:rounded-[20px] ${
+          isMobileMenuOpen
+            ? 'py-4 sm:py-5 opacity-100 translate-y-0 pb-[calc(1.25rem+env(safe-area-inset-bottom))]'
+            : 'py-0 opacity-0 -translate-y-2 pointer-events-none overflow-hidden border-transparent shadow-none'
+        }`}
+      >
+        <div className="max-w-2xl w-full mx-auto flex flex-col gap-1.5">
+          <div className="flex items-center justify-between px-2 pb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Menu
+            </span>
+            <span className="text-[11px] font-semibold text-[#0052cc]">
+              SaibanCapital
+            </span>
           </div>
-        </div>
 
-        {/* Mobile Menu Backdrop */}
-        <div
-          className={`lg:hidden fixed inset-0 top-full bg-[#0a192f]/35 backdrop-blur-[2px] transition-opacity duration-300 z-40 ${
-            isMobileMenuOpen
-              ? 'opacity-100 pointer-events-auto'
-              : 'opacity-0 pointer-events-none'
-          }`}
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-
-        {/* Mobile Menu Drawer */}
-        <div
-          className={`lg:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-2xl px-4 flex flex-col gap-1 z-50 overflow-y-auto transition-all duration-300 ease-out origin-top ${
-            isMobileMenuOpen
-              ? 'max-h-[calc(100dvh-7rem)] py-4 opacity-100 translate-y-0'
-              : 'max-h-0 py-0 opacity-0 -translate-y-2 pointer-events-none overflow-hidden'
-          }`}
-        >
           {mobileDrawerLinks.map((link) =>
             link.dropdownItems ? (
-              <div key={link.label} className="border-b border-slate-100 py-1">
-                <div className="flex items-center justify-between py-1.5">
+              <div
+                key={link.label}
+                className="rounded-2xl bg-slate-50 border border-slate-200/90 px-3 sm:px-4 py-1 my-1"
+              >
+                <div className="flex items-center justify-between py-2">
                   <a
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-[15px] font-semibold text-[#0a192f] hover:text-[#0052cc]"
+                    className="text-[15px] sm:text-[16px] font-bold text-[#0a192f] hover:text-[#0052cc]"
                   >
                     {link.label}
                   </a>
@@ -407,10 +609,10 @@ export default function Header() {
                       )
                     }
                     aria-label={`Expand ${link.label}`}
-                    className="p-1.5 rounded-lg text-slate-600 hover:bg-blue-50 hover:text-[#0052cc] transition-colors"
+                    className="flex h-8.5 w-8.5 items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-700 hover:border-[#0052cc]/40 hover:text-[#0052cc] transition-colors cursor-pointer"
                   >
                     <ChevronDown
-                      size={18}
+                      size={17}
                       className={`transition-transform duration-200 ${
                         openMobileSubmenu === link.label ? 'rotate-180 text-[#0052cc]' : ''
                       }`}
@@ -419,15 +621,16 @@ export default function Header() {
                 </div>
 
                 {openMobileSubmenu === link.label && (
-                  <div className="pl-3 pb-2 pt-1 flex flex-col gap-1 border-l-2 border-[#0052cc]/30 ml-1">
+                  <div className="pb-3 pt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5 border-t border-slate-200/80">
                     {link.dropdownItems.map((subItem) => (
                       <a
                         key={subItem.label}
                         href={subItem.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2 px-2.5 rounded-lg text-[14px] font-medium text-slate-700 hover:bg-blue-50/70 hover:text-[#0052cc] transition-colors"
+                        className="flex items-center gap-2.5 py-2.5 px-3 rounded-xl bg-white hover:bg-blue-50/70 text-[13.5px] sm:text-[14px] font-semibold text-slate-800 hover:text-[#0052cc] border border-slate-200/70 transition-all"
                       >
-                        {subItem.label}
+                        <span className="text-[#0052cc] shrink-0">{subItem.icon}</span>
+                        <span className="truncate">{subItem.label}</span>
                       </a>
                     ))}
                   </div>
@@ -438,31 +641,34 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[15px] font-semibold text-[#0a192f] hover:text-[#0052cc] py-2.5 border-b border-slate-100 last:border-0 transition-colors"
+                className="flex items-center justify-between px-3.5 sm:px-4 py-3 rounded-xl text-[15px] sm:text-[16px] font-bold text-[#0a192f] hover:bg-slate-50 hover:text-[#0052cc] border border-transparent hover:border-slate-200/70 transition-all"
               >
-                {link.label}
+                <span>{link.label}</span>
+                <ArrowRight size={15} className="text-slate-400" />
               </a>
             )
           )}
 
-          <div className="flex flex-col gap-2.5 mt-3 pt-3 border-t border-slate-100">
+          {/* Bottom Mobile/Tablet Support & CTA Grid */}
+          <div className="mt-2.5 pt-3.5 border-t border-slate-200/80 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <a
               href="tel:+918127727747"
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-[#0a192f] font-semibold text-[14.5px]"
+              className="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl border border-slate-300/90 bg-slate-50 text-[#0a192f] font-bold text-[14px] sm:text-[14.5px] active:bg-slate-100 transition-colors"
             >
               <Phone size={16} strokeWidth={2.5} className="text-[#0052cc]" />
               <span>+91 8127727747</span>
             </a>
             <button
               onClick={handleApplyClick}
-              className="w-full flex items-center justify-center gap-1.5 bg-[#0052cc] active:bg-[#003d8f] text-white font-bold text-[15px] px-6 py-3 rounded-xl shadow-md"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0052cc] to-[#0065ff] active:opacity-95 text-white font-bold text-[14.5px] sm:text-[15px] px-6 py-3 rounded-xl shadow-[0_8px_20px_-4px_rgba(0,82,204,0.4)] cursor-pointer"
             >
+              <Sparkles size={16} />
               <span>Apply now</span>
               <ArrowRight size={16} strokeWidth={2.5} />
             </button>
           </div>
         </div>
-      </header>
+      </div>
     </>
   );
 }

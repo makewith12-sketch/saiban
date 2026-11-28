@@ -59,12 +59,12 @@ export default function Hero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[2.45rem] sm:text-[3.25rem] lg:text-[3.85rem] xl:text-[4rem] leading-[1.07] font-bold text-[#0a192f] tracking-tight mb-5 sm:mb-6">
+            <h1 className="text-[2.45rem] sm:text-[3.25rem] lg:text-[3.85rem] xl:text-[4rem] leading-[1.07] font-semibold text-[#0a192f] tracking-tight mb-5 sm:mb-6">
               Borrow with clarity.
               <br />
               Grow with{' '}
-              <span className="text-[#0052cc] font-serif  font-normal tracking-normal block sm:inline">
-                confidence.
+              <span className="text-[#0052cc] font-serif italic font-normal text-[1.08em] tracking-normal block sm:inline">
+              confidence.
               </span>
             </h1>
 
